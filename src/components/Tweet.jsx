@@ -57,15 +57,5 @@ export default function Tweet(props) {
         </div>
       </div>
     </div>
-
-    // <div>
-    //   {images.length > 0 && (
-    //     <div>
-    //       <img src={images[index].url} />
-    //       <p>{images[index].description}</p>
-    //     </div>
-    //   )}
-    //   <button onClick={handleNextButtonClick}>Submit</button>
-    // </div>
   );
 }

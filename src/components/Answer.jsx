@@ -6,6 +6,8 @@ export default function Answer() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [realOrFake, setRealorFake] = useState(null);
+  const [disableButton, setDisableButton] = useState(true);
+  const [selectedConfidence, setSelectedConfidence] = useState(0);
 
   useEffect(() => {
     const storedQuestions = JSON.parse(localStorage.getItem("questions"));
@@ -35,6 +37,15 @@ export default function Answer() {
     }
   }, []);
 
+  useEffect(() => {
+    const isDisabled = !(
+      (realOrFake === "Real" || realOrFake === "Fake") &&
+      selectedConfidence !== 0
+    );
+
+    setDisableButton(isDisabled);
+  }, [realOrFake, selectedConfidence]);
+
   const handleRealAnswer = () => {
     setRealorFake("Real");
   };
@@ -46,22 +57,24 @@ export default function Answer() {
   const handleNextQuestion = () => {
     const nextIndex = questionIndex + 1;
     setQuestionIndex(nextIndex);
-    setRealorFake(null);
 
-    const answerArray = [];
-
-    for (let i = 0; i < 20; i++) {
-      const answer = {
-        imageId: questions[i].imageId,
-        guess: realOrFake === "Real" ? 0 : 1,
-        isWithContext: questions[i].isWithContext,
-        confidenceLevel: questions[i].confidenceLevel,
-        submitted: new Date(),
-        participantId: 1,
-      };
-
-      answerArray.push(answer);
+    if (!(realOrFake && selectedConfidence)) {
+      return;
     }
+
+    const answer = {
+      imageId: questions[questionIndex].id,
+      guess: realOrFake === "Real" ? 0 : 1,
+      isWithContext: questions[questionIndex].isWithContext,
+      confidenceLevel: selectedConfidence,
+      submitted: new Date(),
+      participantId: 1,
+    };
+
+    setAnswers((prevAnswers) => [...prevAnswers, answer]);
+    setRealorFake(null);
+    setSelectedConfidence("");
+    document.getElementById("options").value = "";
   };
 
   return (
@@ -72,10 +85,12 @@ export default function Answer() {
           context={questions[questionIndex].context}
         />
       )}
-      <div className="text-center mt-6">I believe this image is...</div>
+      <div className="text-center mt-6 text-md md:text-lg">
+        I believe this image is...
+      </div>
       <div className="flex justify-center gap-4 mt-3">
         <button
-          className={`py-3 px-16 text-md font-normal text-${
+          className={`py-2 md:py-3 md:px-16 px-8 text-md font-normal text-${
             realOrFake === "Real" ? "black" : "white"
           } bg-${
             realOrFake === "Real" ? "white" : "black"
@@ -85,7 +100,7 @@ export default function Answer() {
           Real
         </button>
         <button
-          className={`py-3 px-16 text-md font-normal text-${
+          className={`py-2 md:py-3 md:px-16 px-8 font-normal text-${
             realOrFake === "Fake" ? "black" : "white"
           } bg-${
             realOrFake === "Fake" ? "white" : "black"
@@ -95,12 +110,39 @@ export default function Answer() {
           Fake
         </button>
       </div>
-      <button
-        onClick={handleNextQuestion}
-        className="py-3 px-16 text-md font-normal text-white bg-black border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-black"
-      >
-        Next
-      </button>
+      <div className="flex justify-center flex-col pt-4 items-center">
+        <label htmlFor="options" className="pr-4">
+          Please state your confidence in your answer..
+        </label>
+        <select
+          name=""
+          id="options"
+          className="mt-2 py-2 w-48 bg-white rounded-md"
+          onChange={(e) => setSelectedConfidence(e.target.value)}
+        >
+          <option value="" className="">
+            Select...
+          </option>
+          <option value="1">Not at all confident</option>
+          <option value="2">Somewhat confident</option>
+          <option value="3">Moderately confident</option>
+          <option value="4">Mostly confident</option>
+          <option value="5">100% confident</option>
+        </select>
+      </div>
+      <div className="flex justify-center pt-4">
+        <button
+          onClick={handleNextQuestion}
+          disabled={disableButton}
+          className={`py-2 md:py-3 md:px-16 px-8 text-md font-normal text-white bg-black border border-black rounded-md shadow-2xl duration-200 ${
+            disableButton
+              ? "cursor-not-allowed"
+              : "hover:bg-white hover:text-black"
+          }`}
+        >
+          Save & Next &#8594;
+        </button>
+      </div>
     </div>
   );
 }
