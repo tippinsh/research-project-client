@@ -6,29 +6,9 @@ import {
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
 
-export default function Tweet() {
+export default function Tweet(props) {
   const [index, setIndex] = useState(0);
   const [images, setImages] = useState([]);
-
-  useEffect(function () {
-    const getData = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/images");
-        if (!response.ok) {
-          throw new Error("Failed to fetch images");
-        }
-        const data = await response.json();
-        setImages(data);
-      } catch (error) {
-        console.error("Error fetching images: ", error);
-      }
-    };
-    getData();
-  }, []);
-
-  const handleNextButtonClick = () => {
-    setIndex((prevIndex) => prevIndex + 1);
-  };
 
   return (
     <div className="flex gap-4 max-w-lg">
@@ -49,15 +29,11 @@ export default function Tweet() {
           <p className="text-gray-400">· 17h</p>
         </div>
         <div className="pt-2 pb-2">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
-            dolor voluptates autem error officiis velit blanditiis non neque
-            dolorem asperiores!
-          </p>
+          <p>{props.context}</p>
         </div>
         <div>
           <img
-            src="https://research-project-s3-bucket.s3.eu-west-2.amazonaws.com/image6.png"
+            src={props.url}
             className="w-full h-full rounded-xl object-cover"
           ></img>
           <div className="flex text-gray-500 mt-3 justify-between">
