@@ -74,9 +74,7 @@ export default function Answer() {
             realOrFake === "Real" ? "black" : "white"
           } bg-${
             realOrFake === "Real" ? "white" : "black"
-          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-${
-            realOrFake === "Real" ? "black" : "white"
-          }`}
+          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-black`}
           onClick={handleRealAnswer}
         >
           Real
@@ -86,9 +84,7 @@ export default function Answer() {
             realOrFake === "Fake" ? "black" : "white"
           } bg-${
             realOrFake === "Fake" ? "white" : "black"
-          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-${
-            realOrFake === "Fake" ? "black" : "white"
-          }`}
+          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-black`}
           onClick={handleFakeAnswer}
         >
           Fake
