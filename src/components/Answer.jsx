@@ -8,6 +8,8 @@ export default function Answer() {
   const [realOrFake, setRealorFake] = useState(null);
   const [disableButton, setDisableButton] = useState(true);
   const [selectedConfidence, setSelectedConfidence] = useState(0);
+  const [lastSeen, setLastSeen] = useState(5);
+  const [twitterData, setTwitterData] = useState([]);
 
   useEffect(() => {
     const storedQuestions = JSON.parse(localStorage.getItem("questions"));
@@ -25,7 +27,6 @@ export default function Answer() {
           const data = await response.json();
 
           localStorage.setItem("questions", JSON.stringify(data));
-          console.log(questions);
 
           setQuestions(data);
         } catch (error) {
@@ -35,6 +36,35 @@ export default function Answer() {
 
       fetchImages();
     }
+  }, []);
+
+  useEffect(() => {
+    async function fetchTwitterData() {
+      try {
+        const storedTwitterData = localStorage.getItem("twitterData");
+
+        if (storedTwitterData) {
+          setTwitterData(JSON.parse(storedTwitterData));
+        } else {
+          const response = await fetch(
+            "http://localhost:8080/api/profile-data"
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch twitter data");
+          }
+
+          const data = await response.json();
+
+          setTwitterData(data);
+          localStorage.setItem("twitterData", JSON.stringify(data));
+        }
+      } catch (error) {
+        console.error("Error fetching twitter data:", error);
+      }
+    }
+
+    fetchTwitterData();
   }, []);
 
   useEffect(() => {
@@ -75,16 +105,29 @@ export default function Answer() {
     setRealorFake(null);
     setSelectedConfidence("");
     document.getElementById("options").value = "";
+    generateRandomNumber();
+  };
+
+  const generateRandomNumber = () => {
+    let randomNum = Math.floor(Math.random() * 20) + 1;
+    setLastSeen(randomNum);
   };
 
   return (
     <div>
-      {questions && questions.length > 1 && (
+      {questions && questions.length > 1 && twitterData.length > 0 && (
         <Tweet
           url={questions[questionIndex].url}
           context={questions[questionIndex].context}
+          questionIndex={questionIndex}
+          lastSeen={lastSeen}
+          twitterName={twitterData[questionIndex].name}
         />
       )}
+      <div className="flex items-center mt-6">
+        <div className="w-full border-t border-gray-300"></div>
+        <div className="w-full border-t border-gray-300"></div>
+      </div>
       <div className="text-center mt-6 text-md md:text-lg">
         I believe this image is...
       </div>
@@ -111,16 +154,15 @@ export default function Answer() {
         </button>
       </div>
       <div className="flex justify-center flex-col pt-4 items-center">
-        <label htmlFor="options" className="pr-4">
+        <label htmlFor="options" className="pr-4 mb-3">
           Please state your confidence in your answer..
         </label>
         <select
-          name=""
           id="options"
-          className="mt-2 py-2 w-48 bg-white rounded-md"
+          className="block appearance-none bg-white w-1/2 border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:border-blue-500"
           onChange={(e) => setSelectedConfidence(e.target.value)}
         >
-          <option value="" className="">
+          <option value="" disabled selected>
             Select...
           </option>
           <option value="1">Not at all confident</option>
