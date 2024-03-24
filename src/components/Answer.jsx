@@ -54,7 +54,12 @@ export default function Answer() {
       const answer = {
         imageId: questions[i].imageId,
         guess: realOrFake === "Real" ? 0 : 1,
+        isWithContext: questions[i].isWithContext,
+        confidenceLevel: questions[i].confidenceLevel,
+        submitted: new Date(),
+        participantId: 1,
       };
+
       answerArray.push(answer);
     }
   };
