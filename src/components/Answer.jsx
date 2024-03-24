@@ -70,7 +70,7 @@ export default function Answer() {
   useEffect(() => {
     const isDisabled = !(
       (realOrFake === "Real" || realOrFake === "Fake") &&
-      selectedConfidence !== 0
+      parseInt(selectedConfidence) !== 0
     );
 
     setDisableButton(isDisabled);
@@ -103,7 +103,7 @@ export default function Answer() {
 
     setAnswers((prevAnswers) => [...prevAnswers, answer]);
     setRealorFake(null);
-    setSelectedConfidence("");
+    setSelectedConfidence(0);
     document.getElementById("options").value = "";
     generateRandomNumber();
   };
@@ -114,76 +114,81 @@ export default function Answer() {
   };
 
   return (
-    <div>
-      {questions && questions.length > 1 && twitterData.length > 0 && (
-        <Tweet
-          url={questions[questionIndex].url}
-          context={questions[questionIndex].context}
-          questionIndex={questionIndex}
-          lastSeen={lastSeen}
-          twitterName={twitterData[questionIndex].name}
-        />
-      )}
-      <div className="flex items-center mt-6">
-        <div className="w-full border-t border-gray-300"></div>
-        <div className="w-full border-t border-gray-300"></div>
+    <div className="md:flex md:gap-10 md:items-center">
+      <div>
+        {questions && questions.length > 1 && twitterData.length > 0 && (
+          <Tweet
+            url={questions[questionIndex].url}
+            context={questions[questionIndex].context}
+            questionIndex={questionIndex}
+            lastSeen={lastSeen}
+            twitterName={twitterData[questionIndex].name}
+          />
+        )}
       </div>
-      <div className="text-center mt-6 text-md md:text-lg">
-        I believe this image is...
-      </div>
-      <div className="flex justify-center gap-4 mt-3">
-        <button
-          className={`py-2 md:py-3 md:px-16 px-8 text-md font-normal text-${
-            realOrFake === "Real" ? "black" : "white"
-          } bg-${
-            realOrFake === "Real" ? "white" : "black"
-          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-black`}
-          onClick={handleRealAnswer}
-        >
-          Real
-        </button>
-        <button
-          className={`py-2 md:py-3 md:px-16 px-8 font-normal text-${
-            realOrFake === "Fake" ? "black" : "white"
-          } bg-${
-            realOrFake === "Fake" ? "white" : "black"
-          } border border-black rounded-md shadow-2xl duration-200 hover:bg-white hover:text-black`}
-          onClick={handleFakeAnswer}
-        >
-          Fake
-        </button>
-      </div>
-      <div className="flex justify-center flex-col pt-4 items-center">
-        <label htmlFor="options" className="pr-4 mb-3">
-          Please state your confidence in your answer..
-        </label>
-        <select
-          id="options"
-          className="block appearance-none bg-white w-1/2 border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:border-blue-500"
-          onChange={(e) => setSelectedConfidence(e.target.value)}
-        >
-          <option value="" disabled selected>
-            Select...
-          </option>
-          <option value="1">Not at all confident</option>
-          <option value="2">Somewhat confident</option>
-          <option value="3">Moderately confident</option>
-          <option value="4">Mostly confident</option>
-          <option value="5">100% confident</option>
-        </select>
-      </div>
-      <div className="flex justify-center pt-4">
-        <button
-          onClick={handleNextQuestion}
-          disabled={disableButton}
-          className={`py-2 md:py-3 md:px-16 px-8 text-md font-normal text-white bg-black border border-black rounded-md shadow-2xl duration-200 ${
-            disableButton
-              ? "cursor-not-allowed"
-              : "hover:bg-white hover:text-black"
-          }`}
-        >
-          Save & Next &#8594;
-        </button>
+      <div>
+        <div className="md:hidden">
+          <div className="flex items-center mt-6">
+            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+        </div>
+        <div className="mt-6 text-md text-center md:text-start">
+          I believe this image is...
+        </div>
+        <div className="flex md:justify-start justify-center gap-4 mt-3">
+          <button
+            className={`w-full py-2 md:py-2 md:px-12 px-8 text-md font-normal ${
+              realOrFake === "Real"
+                ? "text-white bg-myrtle"
+                : "text-black bg-white"
+            } border border-black rounded-md shadow-2xl duration-100 hover:bg-white hover:text-black`}
+            onClick={handleRealAnswer}
+          >
+            Real
+          </button>
+          <button
+            className={`w-full py-2 md:py-2 md:px-12 px-8 font-normal ${
+              realOrFake === "Fake"
+                ? "text-white bg-myrtle"
+                : "text-black bg-white"
+            } border border-black rounded-md shadow-2xl duration-100 hover:bg-white hover:text-black`}
+            onClick={handleFakeAnswer}
+          >
+            Fake
+          </button>
+        </div>
+        <div className="flex justify-center md:justify-start flex-col pt-4 items-center">
+          <label htmlFor="options" className="pr-4 mb-3">
+            Please state your confidence in your answer...
+          </label>
+          <select
+            id="options"
+            className="block appearance-none bg-white w-full border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:border-blue-500"
+            onChange={(e) => setSelectedConfidence(e.target.value)}
+          >
+            <option value="" disabled selected>
+              Select...
+            </option>
+            <option value="1">Somewhat confident</option>
+            <option value="2">Moderately confident</option>
+            <option value="3">Mostly confident</option>
+            <option value="4">100% confident</option>
+          </select>
+        </div>
+        <div className="flex justify-center pt-4">
+          <button
+            onClick={handleNextQuestion}
+            disabled={disableButton}
+            className={`w-full py-2 md:py-3 md:px-12 px-8 text-md font-normal text-white bg-black border border-black rounded-md shadow-2xl duration-200 ${
+              disableButton
+                ? "cursor-not-allowed"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Save & Next &#8594;
+          </button>
+        </div>
       </div>
     </div>
   );
