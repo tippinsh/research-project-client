@@ -170,8 +170,8 @@ export default function Answer() {
             <option value="" disabled selected>
               Select...
             </option>
-            <option value="1">Somewhat confident</option>
-            <option value="2">Moderately confident</option>
+            <option value="1">Not very confident</option>
+            <option value="2">Somewhat confident</option>
             <option value="3">Mostly confident</option>
             <option value="4">100% confident</option>
           </select>
