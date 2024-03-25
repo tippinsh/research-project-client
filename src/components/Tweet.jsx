@@ -57,7 +57,7 @@ export default function Tweet(props) {
           ></img>
           <div className="flex text-gray-500 mt-3 justify-between">
             <div className="flex items-center justify-center">
-              <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-1" />
+              <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-1 transition ease-in-out delay-150 hover:scale-110 duration-300 cursor-pointer" />
               <p className="text-sm">500</p>
             </div>
             <div className="flex items-center justify-center">
