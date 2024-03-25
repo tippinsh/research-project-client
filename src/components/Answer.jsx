@@ -127,7 +127,7 @@ export default function Answer() {
   }, [showContent]);
 
   return (
-    <div className="md:flex md:gap-10 md:items-center">
+    <div className="md:gap-4">
       <div>
         {questions && questions.length > 1 && twitterData.length > 0 && (
           <Tweet
@@ -142,11 +142,11 @@ export default function Answer() {
       <div>
         {showContent && (
           <div>
-            <div className="md:hidden">
-              <div className="flex items-center mt-6">
+            <div>
+              {/* <div className="flex items-center mt-6">
                 <div className="w-full border-t border-gray-300"></div>
                 <div className="w-full border-t border-gray-300"></div>
-              </div>
+              </div> */}
             </div>
             <div className="mt-6 text-md text-center md:text-start">
               I believe this image is...
