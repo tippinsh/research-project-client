@@ -19,7 +19,9 @@ export default function Tweet(props) {
           />
           <div>
             <div className="flex">
-              <p className="font-bold pr-1">{props.twitterName}</p>
+              <p className="font-bold pr-1 text-offwhite">
+                {props.twitterName}
+              </p>
               <img
                 src="src/assets/twitter-verified.png"
                 alt=""
@@ -27,13 +29,13 @@ export default function Tweet(props) {
               />
             </div>
             <div>
-              <p className="pr-3 text-gray-400">@{props.twitterName}</p>
+              <p className="pr-3 text-grayedout">@{props.twitterName}</p>
             </div>
           </div>
         </div>
         <div>
-          <div className="pt-2 pb-2">
-            <p>{props.context}</p>
+          <div className="pt-2 pb-2 ">
+            <p className="text-lg text-offwhite">{props.context}</p>
           </div>
         </div>
         <div>
@@ -43,12 +45,12 @@ export default function Tweet(props) {
           ></img>
         </div>
       </div>
-      <p className="mt-3 text-gray-500">
+      <p className="mt-3 text-grayedout">
         3.17 PM · Mar 24, 2024 · 563.5K Views
       </p>
       <div className="w-full border-t border-gray-300 mt-3"></div>
       <div className="w-full">
-        <div className="flex text-gray-500 mt-3 justify-between">
+        <div className="flex text-grayedout mt-3 justify-between">
           <div className="flex items-center justify-center">
             <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-1 transition ease-in-out delay-150 hover:scale-110 duration-300 cursor-pointer" />
             <p className="text-sm">500</p>
