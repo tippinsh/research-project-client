@@ -42,7 +42,7 @@ function ParticipantForm() {
 
     const resData = await response.json();
     if (!response.ok) {
-      throw new Error("Failed to update user data");
+      throw new Error("Failed to update participant data");
     }
 
     setParticipantId(resData.id);
@@ -114,7 +114,7 @@ function ParticipantForm() {
           htmlFor="selfKnowledgeAssessment"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          What do you rate your ability to identify synthetic images?
+          What would you rate your ability to identify synthetic images?
         </label>
         <select
           id="selfKnowledgeAssessment"

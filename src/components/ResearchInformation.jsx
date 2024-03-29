@@ -134,24 +134,6 @@ function ResearchInformation() {
             </>
           )}
         </Disclosure>
-        <Disclosure as="div" className="mt-2">
-          {({ open }) => (
-            <>
-              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left text-lg font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75">
-                <span>Anything else?</span>
-                <ChevronUpIcon
-                  className={`${
-                    open ? "rotate-180 transform" : ""
-                  } h-5 w-5 text-gray-500`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className="px-4 pb-2 pt-4 text-lg text-offwhite">
-                When you begin the survey there will be a short delay before the
-                questions appear underneath the image.
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
         <div className="inline-flex items-center pt-4">
           <label
             className="relative flex cursor-pointer items-center rounded-full p-3"
