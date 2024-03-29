@@ -1,13 +1,14 @@
-import Answer from "./components/Answer";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/Home";
+import SurveyPage from "./pages/Survey";
+
+const router = createBrowserRouter([
+  { path: "/", element: <HomePage /> },
+  { path: "/survey", element: <SurveyPage /> },
+]);
 
 function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-cyan-100">
-      <div className="p-6 m-3 space-y-10 shadow-2xl rounded-3xl md:p-10 bg-white">
-        <Answer />
-      </div>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
