@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { CSSTransition } from "react-transition-group";
+import "./styles.css";
+
 import {
   ChatBubbleOvalLeftIcon,
   ArrowPathRoundedSquareIcon,
   HeartIcon,
-  ChartBarIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -39,10 +41,18 @@ export default function Tweet(props) {
           </div>
         </div>
         <div>
+          {/* <CSSTransition
+            in={true}
+            appear={true}
+            classNames="image-transition"
+            timeout={1000}
+          > */}
           <img
             src={props.url}
             className="w-full h-full rounded-xl object-cover"
-          ></img>
+            alt="Tweet Image"
+          />
+          {/* </CSSTransition> */}
         </div>
       </div>
       <p className="mt-3 text-grayedout">

@@ -65,15 +65,11 @@ export default function Answer() {
         console.error("Error fetching twitter data:", error);
       }
     }
-
     fetchTwitterData();
   }, []);
 
   useEffect(() => {
-    const isDisabled =
-      (realOrFake === 1 || realOrFake === 2) &&
-      parseInt(selectedConfidence) !== 0;
-
+    const isDisabled = realOrFake === 0 || selectedConfidence === 0;
     setDisableButton(isDisabled);
   }, [realOrFake, selectedConfidence]);
 
@@ -112,7 +108,7 @@ export default function Answer() {
     if (!showContent) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 7000);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
@@ -156,13 +152,14 @@ export default function Answer() {
                       <select
                         id="deepfake"
                         className="bg-black"
+                        value={realOrFake}
                         onChange={(e) => setRealorFake(e.target.value)}
                       >
-                        <option value="" disabled selected>
+                        <option value="0" disabled>
                           ...
                         </option>
-                        <option value="1">real</option>
-                        <option value="2">fake</option>
+                        <option value={1}>real</option>
+                        <option value={2}>fake</option>
                       </select>
                     </p>
                     <p className="p-1 text-lg">
@@ -171,14 +168,15 @@ export default function Answer() {
                         id="options"
                         onChange={(e) => setSelectedConfidence(e.target.value)}
                         className="bg-black"
+                        value={selectedConfidence}
                       >
-                        <option value="" disabled selected>
+                        <option value="0" disabled>
                           ...
                         </option>
-                        <option value="1">not very confident</option>
-                        <option value="2">somewhat confident</option>
-                        <option value="3">mostly confident</option>
-                        <option value="4">100% confident</option>
+                        <option value={1}>not very confident</option>
+                        <option value={2}>somewhat confident</option>
+                        <option value={3}>mostly confident</option>
+                        <option value={4}>100% confident</option>
                       </select>{" "}
                       in my answer
                     </p>
