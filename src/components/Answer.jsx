@@ -108,7 +108,7 @@ export default function Answer() {
     if (!showContent) {
       const timer = setTimeout(() => {
         setShowContent(true);
-      }, 1000);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
