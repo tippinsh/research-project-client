@@ -16,7 +16,7 @@ function HomePage() {
             Before deciding whether to take part, it is important for you to understand what the study involves.
     
             Please take the time to read the information on the next page carefully.`,
-              400,
+              1000,
             ]}
             repeat={1}
           />
