@@ -11,7 +11,7 @@ export default function Answer() {
   const [selectedConfidence, setSelectedConfidence] = useState(0);
   const [lastSeen, setLastSeen] = useState(5);
   const [twitterData, setTwitterData] = useState([]);
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   useEffect(() => {
     const storedQuestions = JSON.parse(localStorage.getItem("questions"));
@@ -91,7 +91,7 @@ export default function Answer() {
     };
 
     setAnswers((prevAnswers) => [...prevAnswers, answer]);
-    setShowContent(false);
+    // setShowContent(false);
     setRealorFake(0);
     setSelectedConfidence(0);
     document.getElementById("options").value = "";
