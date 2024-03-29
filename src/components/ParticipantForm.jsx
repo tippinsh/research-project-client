@@ -64,6 +64,9 @@ function ParticipantForm() {
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
         >
+          <option value="" disabled>
+            Select...
+          </option>
           <option value={0}>18-24</option>
           <option value={1}>25-34</option>
           <option value={2}>35-44</option>
@@ -84,6 +87,9 @@ function ParticipantForm() {
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
         >
+          <option value="" disabled>
+            Select...
+          </option>
           <option>Accountancy, banking and finance</option>
           <option>Business, consulting and management</option>
           <option>Charity and voluntary work</option>
@@ -123,6 +129,9 @@ function ParticipantForm() {
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
         >
+          <option value="" disabled>
+            Select...
+          </option>
           <option value={0}>Excellent</option>
           <option value={1}>Very good</option>
           <option value={2}>Good</option>
