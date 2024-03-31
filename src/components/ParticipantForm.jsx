@@ -8,6 +8,7 @@ function ParticipantForm() {
     selfKnowledgeAssessment: "",
   });
   const [participantId, setParticipantId] = useState(0);
+  const [disableButton, setDisableButton] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,14 @@ function ParticipantForm() {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    const isDisabled =
+      participantValues.ageRange === "" ||
+      participantValues.industry === "" ||
+      participantValues.selfKnowledgeAssessment === "";
+    setDisableButton(isDisabled);
+  }, [participantValues]);
 
   useEffect(() => {
     localStorage.setItem("participantId", participantId);
@@ -46,6 +55,7 @@ function ParticipantForm() {
     }
 
     setParticipantId(resData.id);
+    sessionStorage.setItem("participantId", participantId);
   }
 
   return (
@@ -53,7 +63,7 @@ function ParticipantForm() {
       <form className="max-w-sm mx-auto" method="post" onSubmit={handleSubmit}>
         <label
           htmlFor="ageRange"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
         >
           Select your age range
         </label>
@@ -76,7 +86,7 @@ function ParticipantForm() {
         </select>
         <label
           htmlFor="industry"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
         >
           What industry do you work in?
         </label>
@@ -118,7 +128,7 @@ function ParticipantForm() {
         </select>
         <label
           htmlFor="selfKnowledgeAssessment"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
         >
           What would you rate your ability to identify synthetic images?
         </label>
@@ -144,6 +154,7 @@ function ParticipantForm() {
         {participantId === 0 && (
           <button
             type="submit"
+            disabled={disableButton}
             className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
           >
             Submit
@@ -153,7 +164,7 @@ function ParticipantForm() {
           <Link to="/survey">
             <button
               type="submit"
-              className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
             >
               Next
             </button>

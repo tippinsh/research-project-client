@@ -34,6 +34,11 @@ export default function Tweet(props) {
               <p className="pr-3 text-grayedout">@{props.twitterName}</p>
             </div>
           </div>
+          <div className="ml-auto">
+            <button className="bg-buttonwhite px-5 py-2 rounded-full text-black font-bold text-sm md:text-md hover:opacity-90">
+              Follow
+            </button>
+          </div>
         </div>
         <div>
           <div className="pt-2 pb-2 ">
@@ -41,24 +46,18 @@ export default function Tweet(props) {
           </div>
         </div>
         <div>
-          {/* <CSSTransition
-            in={true}
-            appear={true}
-            classNames="image-transition"
-            timeout={1000}
-          > */}
           <img
             src={props.url}
             className="w-full h-full rounded-xl object-cover"
             alt="Tweet Image"
           />
-          {/* </CSSTransition> */}
         </div>
       </div>
       <p className="mt-3 text-grayedout">
-        3.17 PM · Mar 24, 2024 · 563.5K Views
+        3.17 PM · Mar 24, 2024 · <span className="text-white">563.5K</span>{" "}
+        Views
       </p>
-      <div className="w-full border-t border-gray-300 mt-3"></div>
+      <div className="w-full border-t border-grayedout mt-3"></div>
       <div className="w-full">
         <div className="flex text-grayedout mt-3 justify-between">
           <div className="flex items-center justify-center">
@@ -78,7 +77,7 @@ export default function Tweet(props) {
             <p className="text-sm">314</p>
           </div>
         </div>
-        <div className="w-full border-t border-gray-300 mt-4"></div>
+        <div className="w-full border-t border-grayedout mt-4"></div>
       </div>
     </div>
   );

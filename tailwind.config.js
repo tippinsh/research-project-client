@@ -8,6 +8,7 @@ export default {
         twitterblue: "#1D9BF0",
         grayedout: "#6E7377",
         offwhite: "#E7E9EA",
+        buttonwhite: "#EFF3F4",
       },
       fontFamily: {
         sans: ["Helvetica", "Arial", "sans-serif"],

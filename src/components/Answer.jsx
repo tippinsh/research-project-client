@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Tweet from "./Tweet";
 import { Transition } from "@headlessui/react";
+import CryptoJS from "crypto-js";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -12,11 +13,21 @@ export default function Answer() {
   const [lastSeen, setLastSeen] = useState(5);
   const [twitterData, setTwitterData] = useState([]);
   const [showContent, setShowContent] = useState(true);
+  const secretKey = "secret_key";
 
   useEffect(() => {
-    const storedQuestions = JSON.parse(localStorage.getItem("questions"));
-    if (storedQuestions) {
-      setQuestions(storedQuestions);
+    const storedEncryptedData = localStorage.getItem("questions");
+    if (storedEncryptedData) {
+      try {
+        const decryptedQuestions = CryptoJS.AES.decrypt(
+          storedEncryptedData,
+          secretKey
+        ).toString(CryptoJS.enc.Utf8);
+        const parsedQuestions = JSON.parse(decryptedQuestions);
+        setQuestions(parsedQuestions);
+      } catch (error) {
+        console.error("Error getting questions", error);
+      }
     } else {
       async function fetchImages() {
         try {
@@ -27,9 +38,13 @@ export default function Answer() {
           }
 
           const data = await response.json();
+          const jsonData = JSON.stringify(data);
+          const encryptedData = CryptoJS.AES.encrypt(
+            jsonData,
+            secretKey
+          ).toString();
 
-          localStorage.setItem("questions", JSON.stringify(data));
-
+          localStorage.setItem("questions", encryptedData);
           setQuestions(data);
         } catch (error) {
           console.error("Error fetching questions:", error);
@@ -147,7 +162,7 @@ export default function Answer() {
                   leaveTo="opacity-0"
                 >
                   <div>
-                    <p className="p-1 text-lg">
+                    <p className="p-1 text-md md:text-lg">
                       I believe the above image is{" "}
                       <select
                         id="deepfake"
@@ -162,7 +177,7 @@ export default function Answer() {
                         <option value={2}>fake</option>
                       </select>
                     </p>
-                    <p className="p-1 text-lg">
+                    <p className="p-1 text-md md:text-lg">
                       I am{" "}
                       <select
                         id="options"
@@ -182,7 +197,9 @@ export default function Answer() {
                     </p>
                     <div className="flex justify-end mt-1">
                       <button
-                        className="bg-twitterblue px-3 py-2 rounded-full text-white font-bold"
+                        className={`bg-twitterblue px-3 py-2 rounded-full text-white font-bold text-sm md:text-md ${
+                          disableButton ? "opacity-50" : ""
+                        }`}
                         onClick={handleNextQuestion}
                         disabled={disableButton}
                       >
@@ -194,7 +211,7 @@ export default function Answer() {
               </div>
             </div>
           </div>
-          <div className="w-full border-t border-gray-300 mt-4"></div>
+          <div className="w-full border-t border-grayedout mt-4"></div>
         </div>
       </div>
     </div>
