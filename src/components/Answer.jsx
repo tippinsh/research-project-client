@@ -130,88 +130,94 @@ export default function Answer() {
   }, [showContent]);
 
   return (
-    <div className="md:gap-4">
-      <div className="transition-opacity duration-500">
-        {questions && questions.length > 1 && twitterData.length > 0 && (
-          <Tweet
-            url={questions[questionIndex].url}
-            context={questions[questionIndex].context}
-            questionIndex={questionIndex}
-            lastSeen={lastSeen}
-            twitterName={twitterData[questionIndex].name}
-          />
-        )}
-      </div>
-      <div>
-        <div>
-          <div>
-            <div className="pt-4 flex pb-2">
-              <img
-                src="src/assets/default-profile.png"
-                alt=""
-                className="h-12 w-12 rounded-full mr-4"
+    <div className="border-x border-grayedout border-opacity-50 top-0 bottom-0 min-h-screen">
+      <div className="relative">
+        <div className="p-6">
+          <div className="transition-opacity duration-500">
+            {questions && questions.length > 1 && twitterData.length > 0 && (
+              <Tweet
+                url={questions[questionIndex].url}
+                context={questions[questionIndex].context}
+                questionIndex={questionIndex}
+                lastSeen={lastSeen}
+                twitterName={twitterData[questionIndex].name}
               />
-              <div className="w-full h-28">
-                <Transition
-                  show={showContent}
-                  enter="transition-opacity duration-1000 ease-in-out"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="transition-opacity duration-600 ease-out"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div>
-                    <p className="p-1 text-md md:text-lg">
-                      I believe the above image is{" "}
-                      <select
-                        id="deepfake"
-                        className="bg-black"
-                        value={realOrFake}
-                        onChange={(e) => setRealorFake(e.target.value)}
-                      >
-                        <option value="0" disabled>
-                          ...
-                        </option>
-                        <option value={1}>real</option>
-                        <option value={2}>fake</option>
-                      </select>
-                    </p>
-                    <p className="p-1 text-md md:text-lg">
-                      I am{" "}
-                      <select
-                        id="options"
-                        onChange={(e) => setSelectedConfidence(e.target.value)}
-                        className="bg-black"
-                        value={selectedConfidence}
-                      >
-                        <option value="0" disabled>
-                          ...
-                        </option>
-                        <option value={1}>not very confident</option>
-                        <option value={2}>somewhat confident</option>
-                        <option value={3}>mostly confident</option>
-                        <option value={4}>100% confident</option>
-                      </select>{" "}
-                      in my answer
-                    </p>
-                    <div className="flex justify-end mt-1">
-                      <button
-                        className={`bg-twitterblue px-3 py-2 rounded-full text-white font-bold text-sm md:text-md ${
-                          disableButton ? "opacity-50" : ""
-                        }`}
-                        onClick={handleNextQuestion}
-                        disabled={disableButton}
-                      >
-                        Submit
-                      </button>
-                    </div>
+            )}
+          </div>
+          <div>
+            <div>
+              <div>
+                <div className="pt-4 flex pb-2">
+                  <img
+                    src="src/assets/default-profile.png"
+                    alt=""
+                    className="h-12 w-12 rounded-full mr-4"
+                  />
+                  <div className="w-full h-28">
+                    <Transition
+                      show={showContent}
+                      enter="transition-opacity duration-1000 ease-in-out"
+                      enterFrom="opacity-0"
+                      enterTo="opacity-100"
+                      leave="transition-opacity duration-600 ease-out"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <div>
+                        <p className="p-1 text-md md:text-lg">
+                          I believe the above image is{" "}
+                          <select
+                            id="deepfake"
+                            className="bg-black"
+                            value={realOrFake}
+                            onChange={(e) => setRealorFake(e.target.value)}
+                          >
+                            <option value="0" disabled>
+                              ...
+                            </option>
+                            <option value={1}>real</option>
+                            <option value={2}>fake</option>
+                          </select>
+                        </p>
+                        <p className="p-1 text-md md:text-lg">
+                          I am{" "}
+                          <select
+                            id="options"
+                            onChange={(e) =>
+                              setSelectedConfidence(e.target.value)
+                            }
+                            className="bg-black"
+                            value={selectedConfidence}
+                          >
+                            <option value="0" disabled>
+                              ...
+                            </option>
+                            <option value={1}>not very confident</option>
+                            <option value={2}>somewhat confident</option>
+                            <option value={3}>mostly confident</option>
+                            <option value={4}>100% confident</option>
+                          </select>{" "}
+                          in my answer
+                        </p>
+                        <div className="flex justify-end mt-1">
+                          <button
+                            className={`bg-twitterblue px-3 py-2 rounded-full text-white font-bold text-sm md:text-md ${
+                              disableButton ? "opacity-50" : ""
+                            }`}
+                            onClick={handleNextQuestion}
+                            disabled={disableButton}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </Transition>
                   </div>
-                </Transition>
+                </div>
               </div>
+              <div className="w-full border-t border-grayedout mt-3 border-opacity-50 absolute left-0"></div>
             </div>
           </div>
-          <div className="w-full border-t border-grayedout mt-4 border-opacity-50"></div>
         </div>
       </div>
     </div>

@@ -77,7 +77,7 @@ export default function Tweet(props) {
             <p className="text-sm">314</p>
           </div>
         </div>
-        <div className="w-full border-t border-grayedout mt-4 border-opacity-50"></div>
+        <div className="w-full border-t border-grayedout mt-4 "></div>
       </div>
     </div>
   );
