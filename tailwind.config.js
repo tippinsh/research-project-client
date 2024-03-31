@@ -9,6 +9,7 @@ export default {
         grayedout: "#6E7377",
         offwhite: "#E7E9EA",
         buttonwhite: "#EFF3F4",
+        outline: "#6E7377",
       },
       fontFamily: {
         sans: ["Helvetica", "Arial", "sans-serif"],

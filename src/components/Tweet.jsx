@@ -57,7 +57,7 @@ export default function Tweet(props) {
         3.17 PM · Mar 24, 2024 · <span className="text-white">563.5K</span>{" "}
         Views
       </p>
-      <div className="w-full border-t border-grayedout mt-3"></div>
+      <div className="w-full border-t border-grayedout mt-3 border-opacity-50"></div>
       <div className="w-full">
         <div className="flex text-grayedout mt-3 justify-between">
           <div className="flex items-center justify-center">
@@ -77,7 +77,7 @@ export default function Tweet(props) {
             <p className="text-sm">314</p>
           </div>
         </div>
-        <div className="w-full border-t border-grayedout mt-4"></div>
+        <div className="w-full border-t border-grayedout mt-4 border-opacity-50"></div>
       </div>
     </div>
   );
