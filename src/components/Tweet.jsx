@@ -21,7 +21,7 @@ export default function Tweet(props) {
           />
           <div>
             <div className="flex">
-              <p className="font-bold pr-1 text-offwhite">
+              <p className="font-bold pr-1 text-offwhite text-sm md:text-lg">
                 {props.twitterName}
               </p>
               <img
@@ -31,7 +31,9 @@ export default function Tweet(props) {
               />
             </div>
             <div>
-              <p className="pr-3 text-grayedout">@{props.twitterName}</p>
+              <p className="pr-3 text-grayedout text-sm md:text-lg">
+                @{props.twitterName}
+              </p>
             </div>
           </div>
           <div className="ml-auto">
@@ -42,7 +44,9 @@ export default function Tweet(props) {
         </div>
         <div>
           <div className="pt-2 pb-2 ">
-            <p className="text-lg text-offwhite">{props.context}</p>
+            <p className="text-lg text-offwhite text-md md:text-lg">
+              {props.context}
+            </p>
           </div>
         </div>
         <div>
@@ -53,7 +57,7 @@ export default function Tweet(props) {
           />
         </div>
       </div>
-      <p className="mt-3 text-grayedout">
+      <p className="mt-3 text-grayedout text-sm md:text-lg">
         3.17 PM · Mar 24, 2024 · <span className="text-white">563.5K</span>{" "}
         Views
       </p>
@@ -77,7 +81,7 @@ export default function Tweet(props) {
             <p className="text-sm">314</p>
           </div>
         </div>
-        <div className="w-full border-t border-grayedout mt-4 "></div>
+        <div className="w-full border-t border-grayedout border-opacity-50 mt-4 "></div>
       </div>
     </div>
   );

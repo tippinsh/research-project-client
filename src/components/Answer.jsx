@@ -201,7 +201,7 @@ export default function Answer() {
                         </p>
                         <div className="flex justify-end mt-1">
                           <button
-                            className={`bg-twitterblue px-3 py-2 rounded-full text-white font-bold text-sm md:text-md ${
+                            className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
                               disableButton ? "opacity-50" : ""
                             }`}
                             onClick={handleNextQuestion}
@@ -215,7 +215,7 @@ export default function Answer() {
                   </div>
                 </div>
               </div>
-              <div className="w-full border-t border-grayedout mt-3 border-opacity-50 absolute left-0"></div>
+              <div className="w-full border-t border-grayedout mt-5 border-opacity-50 absolute left-0"></div>
             </div>
           </div>
         </div>
