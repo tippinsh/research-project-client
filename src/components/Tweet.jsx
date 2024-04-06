@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./styles.css";
+import SlotCounter from "react-slot-counter";
 
 import {
   ChatBubbleOvalLeftIcon,
@@ -12,7 +13,7 @@ import {
 export default function Tweet(props) {
   return (
     <div>
-      <div className="flex-row gap-4 max-w-lg">
+      <div className="flex-row gap-4 max-w-xl">
         <div className="flex items-center">
           <img
             src="src/assets/dummy-profile.jpeg"
@@ -66,19 +67,27 @@ export default function Tweet(props) {
         <div className="flex text-grayedout mt-3 justify-between">
           <div className="flex items-center justify-center">
             <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-1 transition ease-in-out delay-150 hover:scale-110 duration-300 cursor-pointer" />
-            <p className="text-sm">500</p>
+            <p className="text-sm">
+              <SlotCounter value={props.comments} />
+            </p>
           </div>
           <div className="flex items-center justify-center">
             <ArrowPathRoundedSquareIcon className="h-6 w-6 mr-1" />
-            <p className="text-sm">1.1K</p>
+            <p className="text-sm">
+              <SlotCounter value={props.retweets} />
+            </p>
           </div>
           <div className="flex items-center justify-center">
             <HeartIcon className="h-6 w-6 mr-1" />
-            <p className="text-sm">7K</p>
+            <p className="text-sm">
+              <SlotCounter value={props.likes} />
+            </p>
           </div>
           <div className="flex items-center justify-center">
             <BookmarkIcon className="h-6 w-6 mr-1" />
-            <p className="text-sm">314</p>
+            <p className="text-sm">
+              <SlotCounter value={props.bookmarked} />
+            </p>
           </div>
         </div>
         <div className="w-full border-t border-grayedout border-opacity-50 mt-4 "></div>

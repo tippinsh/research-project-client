@@ -12,7 +12,6 @@ export default function Answer() {
   const [selectedConfidence, setSelectedConfidence] = useState(0);
   const [lastSeen, setLastSeen] = useState(5);
   const [twitterData, setTwitterData] = useState([]);
-  const [showContent, setShowContent] = useState(true);
   const secretKey = "secret_key";
 
   useEffect(() => {
@@ -106,7 +105,6 @@ export default function Answer() {
     };
 
     setAnswers((prevAnswers) => [...prevAnswers, answer]);
-    // setShowContent(false);
     setRealorFake(0);
     setSelectedConfidence(0);
     document.getElementById("options").value = "";
@@ -118,16 +116,6 @@ export default function Answer() {
     let randomNum = Math.floor(Math.random() * 20) + 1;
     setLastSeen(randomNum);
   };
-
-  useEffect(() => {
-    if (!showContent) {
-      const timer = setTimeout(() => {
-        setShowContent(true);
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showContent]);
 
   return (
     <div className="border-x border-grayedout border-opacity-50 top-0 bottom-0 min-h-screen">
@@ -141,6 +129,10 @@ export default function Answer() {
                 questionIndex={questionIndex}
                 lastSeen={lastSeen}
                 twitterName={twitterData[questionIndex].name}
+                comments={500}
+                retweets={"1.2K"}
+                likes={"7K"}
+                bookmarked={314}
               />
             )}
           </div>
@@ -154,64 +146,54 @@ export default function Answer() {
                     className="h-12 w-12 rounded-full mr-4"
                   />
                   <div className="w-full h-28">
-                    <Transition
-                      show={showContent}
-                      enter="transition-opacity duration-1000 ease-in-out"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition-opacity duration-600 ease-out"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <div>
-                        <p className="p-1 text-md md:text-lg">
-                          I believe the above image is{" "}
-                          <select
-                            id="deepfake"
-                            className="bg-black"
-                            value={realOrFake}
-                            onChange={(e) => setRealorFake(e.target.value)}
-                          >
-                            <option value="0" disabled>
-                              ...
-                            </option>
-                            <option value={1}>real</option>
-                            <option value={2}>fake</option>
-                          </select>
-                        </p>
-                        <p className="p-1 text-md md:text-lg">
-                          I am{" "}
-                          <select
-                            id="options"
-                            onChange={(e) =>
-                              setSelectedConfidence(e.target.value)
-                            }
-                            className="bg-black"
-                            value={selectedConfidence}
-                          >
-                            <option value="0" disabled>
-                              ...
-                            </option>
-                            <option value={1}>not very confident</option>
-                            <option value={2}>somewhat confident</option>
-                            <option value={3}>mostly confident</option>
-                            <option value={4}>100% confident</option>
-                          </select>{" "}
-                          in my answer
-                        </p>
-                        <div className="flex justify-end mt-1">
-                          <button
-                            className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
-                              disableButton ? "opacity-50" : ""
-                            }`}
-                            onClick={handleNextQuestion}
-                            disabled={disableButton}
-                          >
-                            Submit
-                          </button>
-                        </div>
+                    <div>
+                      <p className="p-1 text-md md:text-lg">
+                        I believe the above image is{" "}
+                        <select
+                          id="deepfake"
+                          className="bg-black"
+                          value={realOrFake}
+                          onChange={(e) => setRealorFake(e.target.value)}
+                        >
+                          <option value="0" disabled>
+                            ...
+                          </option>
+                          <option value={1}>real</option>
+                          <option value={2}>fake</option>
+                        </select>
+                      </p>
+                      <p className="p-1 text-md md:text-lg">
+                        I am{" "}
+                        <select
+                          id="options"
+                          onChange={(e) =>
+                            setSelectedConfidence(e.target.value)
+                          }
+                          className="bg-black"
+                          value={selectedConfidence}
+                        >
+                          <option value="0" disabled>
+                            ...
+                          </option>
+                          <option value={1}>not very confident</option>
+                          <option value={2}>somewhat confident</option>
+                          <option value={3}>mostly confident</option>
+                          <option value={4}>100% confident</option>
+                        </select>{" "}
+                        in my answer
+                      </p>
+                      <div className="flex justify-end mt-1">
+                        <button
+                          className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
+                            disableButton ? "opacity-50" : ""
+                          }`}
+                          onClick={handleNextQuestion}
+                          disabled={disableButton}
+                        >
+                          Submit
+                        </button>
                       </div>
-                    </Transition>
+                    </div>
                   </div>
                 </div>
               </div>
