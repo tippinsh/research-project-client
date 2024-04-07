@@ -59,7 +59,10 @@ export default function Tweet(props) {
         </div>
       </div>
       <p className="mt-3 text-grayedout text-sm md:text-lg">
-        3.17 PM · Mar 24, 2024 · <span className="text-white">563.5K</span>{" "}
+        3.17 PM · Mar 24, 2024 ·{" "}
+        <span className="text-white">
+          <SlotCounter value={props.views} />
+        </span>{" "}
         Views
       </p>
       <div className="w-full border-t border-grayedout mt-3 border-opacity-50"></div>

@@ -38,6 +38,7 @@ export default function Answer() {
 
           const data = await response.json();
           const jsonData = JSON.stringify(data);
+          console.log(jsonData);
           const encryptedData = CryptoJS.AES.encrypt(
             jsonData,
             secretKey
@@ -129,10 +130,11 @@ export default function Answer() {
                 questionIndex={questionIndex}
                 lastSeen={lastSeen}
                 twitterName={twitterData[questionIndex].name}
-                comments={500}
-                retweets={"1.2K"}
-                likes={"7K"}
-                bookmarked={314}
+                comments={questions[questionIndex].numComments}
+                retweets={questions[questionIndex].numRetweets}
+                likes={questions[questionIndex].numLikes}
+                bookmarked={questions[questionIndex].numBookmarked}
+                views={questions[questionIndex].numViews}
               />
             )}
           </div>
