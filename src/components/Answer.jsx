@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Tweet from "./Tweet";
-import { Transition } from "@headlessui/react";
 import CryptoJS from "crypto-js";
+import Spinner from "./Spinner";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -12,7 +12,18 @@ export default function Answer() {
   const [selectedConfidence, setSelectedConfidence] = useState(0);
   const [lastSeen, setLastSeen] = useState(5);
   const [twitterData, setTwitterData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [participantId, setParticipantId] = useState(0);
   const secretKey = "secret_key";
+
+  useEffect(() => {
+    const storedParticipantId = localStorage.getItem("participantId");
+    if (storedParticipantId) {
+      setParticipantId(storedParticipantId);
+    }
+  }, []);
+
+  async function fetchImages() {}
 
   useEffect(() => {
     const storedEncryptedData = localStorage.getItem("questions");
@@ -24,13 +35,22 @@ export default function Answer() {
         ).toString(CryptoJS.enc.Utf8);
         const parsedQuestions = JSON.parse(decryptedQuestions);
         setQuestions(parsedQuestions);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error getting questions", error);
       }
     } else {
       async function fetchImages() {
         try {
-          const response = await fetch("http://localhost:8080/api/images");
+          const storedParticipantId = localStorage.getItem("participantId");
+
+          if (!storedParticipantId) {
+            throw new Error("Participant ID not found in local storage");
+          }
+
+          const response = await fetch(
+            `http://localhost:8080/api/images/${storedParticipantId}`
+          );
 
           if (!response.ok) {
             throw new Error("Failed to fetch questions");
@@ -38,7 +58,6 @@ export default function Answer() {
 
           const data = await response.json();
           const jsonData = JSON.stringify(data);
-          console.log(jsonData);
           const encryptedData = CryptoJS.AES.encrypt(
             jsonData,
             secretKey
@@ -46,6 +65,7 @@ export default function Answer() {
 
           localStorage.setItem("questions", encryptedData);
           setQuestions(data);
+          setIsLoading(false);
         } catch (error) {
           console.error("Error fetching questions:", error);
         }
@@ -54,6 +74,10 @@ export default function Answer() {
       fetchImages();
     }
   }, []);
+
+  useEffect(() => {
+    console.log(answers, participantId);
+  }, [answers, participantId]);
 
   useEffect(() => {
     async function fetchTwitterData() {
@@ -89,9 +113,6 @@ export default function Answer() {
   }, [realOrFake, selectedConfidence]);
 
   const handleNextQuestion = () => {
-    const nextIndex = questionIndex + 1;
-    setQuestionIndex(nextIndex);
-
     if (!(realOrFake && selectedConfidence)) {
       return;
     }
@@ -102,15 +123,20 @@ export default function Answer() {
       isWithContext: questions[questionIndex].isWithContext,
       confidenceLevel: selectedConfidence,
       submitted: new Date(),
-      participantId: 1,
+      participantId: participantId,
     };
 
     setAnswers((prevAnswers) => [...prevAnswers, answer]);
+
+    const nextIndex = questionIndex + 1;
+    setQuestionIndex(nextIndex);
+
     setRealorFake(0);
     setSelectedConfidence(0);
     document.getElementById("options").value = "";
     document.getElementById("deepfake").value = "";
     generateRandomNumber();
+    console.log(answers);
   };
 
   const generateRandomNumber = () => {
@@ -123,19 +149,28 @@ export default function Answer() {
       <div className="relative">
         <div className="p-6">
           <div className="transition-opacity duration-500">
-            {questions && questions.length > 1 && twitterData.length > 0 && (
-              <Tweet
-                url={questions[questionIndex].url}
-                context={questions[questionIndex].context}
-                questionIndex={questionIndex}
-                lastSeen={lastSeen}
-                twitterName={twitterData[questionIndex].name}
-                comments={questions[questionIndex].numComments}
-                retweets={questions[questionIndex].numRetweets}
-                likes={questions[questionIndex].numLikes}
-                bookmarked={questions[questionIndex].numBookmarked}
-                views={questions[questionIndex].numViews}
-              />
+            {isLoading ? (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            ) : (
+              questions &&
+              questions.length > 1 &&
+              twitterData.length > 0 && (
+                <Tweet
+                  url={questions[questionIndex].url}
+                  context={questions[questionIndex].context}
+                  questionIndex={questionIndex}
+                  isWithContext={questions[questionIndex].isWithContext}
+                  lastSeen={lastSeen}
+                  twitterName={twitterData[questionIndex].name}
+                  comments={questions[questionIndex].numComments}
+                  retweets={questions[questionIndex].numRetweets}
+                  likes={questions[questionIndex].numLikes}
+                  bookmarked={questions[questionIndex].numBookmarked}
+                  views={questions[questionIndex].numViews}
+                />
+              )
             )}
           </div>
           <div>

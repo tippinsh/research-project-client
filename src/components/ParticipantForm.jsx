@@ -26,10 +26,6 @@ function ParticipantForm() {
     setDisableButton(isDisabled);
   }, [participantValues]);
 
-  useEffect(() => {
-    localStorage.setItem("participantId", participantId);
-  }, [participantId]);
-
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -54,8 +50,9 @@ function ParticipantForm() {
       throw new Error("Failed to update participant data");
     }
 
-    setParticipantId(resData.id);
-    sessionStorage.setItem("participantId", participantId);
+    const newParticipantId = resData.id;
+    setParticipantId(newParticipantId);
+    localStorage.setItem("participantId", newParticipantId);
   }
 
   return (
@@ -161,9 +158,13 @@ function ParticipantForm() {
           </button>
         )}
         {participantId > 0 && (
-          <Link to="/survey">
+          <Link
+            to={{
+              pathname: "/survey",
+            }}
+          >
             <button
-              type="submit"
+              type="button"
               className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
             >
               Next

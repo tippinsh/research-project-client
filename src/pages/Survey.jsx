@@ -1,8 +1,9 @@
 import Answer from "../components/Answer";
 import Sidebar from "../components/Sidebar";
 import RecommendationBar from "../components/RecommendationBar";
+import { useLocation } from "react-router-dom";
 
-function SurveyPage() {
+export default function SurveyPage() {
   return (
     <div className="bg-black min-h-screen">
       <div className="container h-full mx-auto xl:px-30 max-w-7xl">
@@ -21,5 +22,3 @@ function SurveyPage() {
     </div>
   );
 }
-
-export default SurveyPage;

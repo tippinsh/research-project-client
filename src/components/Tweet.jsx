@@ -45,9 +45,11 @@ export default function Tweet(props) {
         </div>
         <div>
           <div className="pt-2 pb-2 ">
-            <p className="text-lg text-offwhite text-md md:text-lg">
-              {props.context}
-            </p>
+            {props.isWithContext && (
+              <p className="text-lg text-offwhite text-md md:text-lg">
+                {props.context}
+              </p>
+            )}
           </div>
         </div>
         <div>
