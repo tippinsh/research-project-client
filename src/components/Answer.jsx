@@ -7,31 +7,34 @@ export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
-  const [realOrFake, setRealorFake] = useState(0);
+  const [answersResponse, setAnswersResponse] = useState([]);
+  const [realOrFake, setRealOrFake] = useState(0);
   const [disableButton, setDisableButton] = useState(true);
   const [selectedConfidence, setSelectedConfidence] = useState(0);
   const [lastSeen, setLastSeen] = useState(5);
   const [twitterData, setTwitterData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [participantId, setParticipantId] = useState(0);
+  const [score, setScore] = useState(0);
   const secretKey = "secret_key";
 
+  // Get participant id and store in local storage
   useEffect(() => {
     const storedParticipantId = localStorage.getItem("participantId");
     if (storedParticipantId) {
-      setParticipantId(storedParticipantId);
+      setParticipantId(parseInt(storedParticipantId));
     }
   }, []);
 
-  async function fetchImages() {}
-
+  // Get question data from local storage, if it is present then decrypt it and set the questions to the Question state
+  // If it is not present then make an API call to retrieve it, then encrypt and store in local storage
   useEffect(() => {
     const storedEncryptedData = localStorage.getItem("questions");
     if (storedEncryptedData) {
       try {
         const decryptedQuestions = CryptoJS.AES.decrypt(
           storedEncryptedData,
-          secretKey
+          secretKey,
         ).toString(CryptoJS.enc.Utf8);
         const parsedQuestions = JSON.parse(decryptedQuestions);
         setQuestions(parsedQuestions);
@@ -40,44 +43,35 @@ export default function Answer() {
         console.error("Error getting questions", error);
       }
     } else {
-      async function fetchImages() {
+      const fetchImages = async () => {
         try {
           const storedParticipantId = localStorage.getItem("participantId");
-
-          if (!storedParticipantId) {
-            throw new Error("Participant ID not found in local storage");
-          }
-
           const response = await fetch(
-            `http://localhost:8080/api/images/${storedParticipantId}`
+            `http://localhost:8080/api/images/${storedParticipantId}`,
           );
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch questions");
-          }
-
           const data = await response.json();
-          const jsonData = JSON.stringify(data);
-          const encryptedData = CryptoJS.AES.encrypt(
-            jsonData,
-            secretKey
-          ).toString();
+          const json = JSON.stringify(data);
 
-          localStorage.setItem("questions", encryptedData);
-          setQuestions(data);
+          encryptQuestionData(json, data);
           setIsLoading(false);
         } catch (error) {
           console.error("Error fetching questions:", error);
         }
-      }
+      };
 
-      fetchImages();
+      fetchImages().catch((error) =>
+        console.error("Error fetching images:", error),
+      );
     }
   }, []);
 
-  useEffect(() => {
-    console.log(answers, participantId);
-  }, [answers, participantId]);
+  // If data does not exist in local storage, then encrypt it and store in local storage
+  function encryptQuestionData(json, data) {
+    const encryptedData = CryptoJS.AES.encrypt(json, secretKey).toString();
+    localStorage.setItem("questions", encryptedData);
+    setQuestions(data);
+  }
 
   useEffect(() => {
     async function fetchTwitterData() {
@@ -88,15 +82,10 @@ export default function Answer() {
           setTwitterData(JSON.parse(storedTwitterData));
         } else {
           const response = await fetch(
-            "http://localhost:8080/api/profile-data"
+            "http://localhost:8080/api/profile-data",
           );
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch twitter data");
-          }
-
           const data = await response.json();
-
           setTwitterData(data);
           localStorage.setItem("twitterData", JSON.stringify(data));
         }
@@ -104,7 +93,9 @@ export default function Answer() {
         console.error("Error fetching twitter data:", error);
       }
     }
-    fetchTwitterData();
+    fetchTwitterData().catch((error) =>
+      console.error("Error fetching twitter data:", error),
+    );
   }, []);
 
   useEffect(() => {
@@ -119,7 +110,7 @@ export default function Answer() {
 
     const answer = {
       imageId: questions[questionIndex].id,
-      guess: realOrFake === 1 ? 0 : 1,
+      guess: realOrFake,
       isWithContext: questions[questionIndex].isWithContext,
       confidenceLevel: selectedConfidence,
       submitted: new Date(),
@@ -131,7 +122,7 @@ export default function Answer() {
     const nextIndex = questionIndex + 1;
     setQuestionIndex(nextIndex);
 
-    setRealorFake(0);
+    setRealOrFake(0);
     setSelectedConfidence(0);
     document.getElementById("options").value = "";
     document.getElementById("deepfake").value = "";
@@ -139,9 +130,41 @@ export default function Answer() {
     console.log(answers);
   };
 
+  const handleSubmitAnswers = async () => {
+    try {
+      var json = JSON.stringify(answers);
+      console.log(json);
+      const response = await fetch("http://localhost:8080/api/answers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setAnswersResponse(data);
+        calculateScore();
+      }
+    } catch (error) {
+      console.error("Error submitting answers", error);
+    }
+  };
+
   const generateRandomNumber = () => {
     let randomNum = Math.floor(Math.random() * 20) + 1;
     setLastSeen(randomNum);
+  };
+
+  const calculateScore = () => {
+    let numCorrect = 0;
+    answersResponse.forEach((a) => {
+      if (a.isCorrect) {
+        numCorrect++;
+      }
+      setScore(numCorrect);
+    });
   };
 
   return (
@@ -157,83 +180,126 @@ export default function Answer() {
               questions &&
               questions.length > 1 &&
               twitterData.length > 0 && (
-                <Tweet
-                  url={questions[questionIndex].url}
-                  context={questions[questionIndex].context}
-                  questionIndex={questionIndex}
-                  isWithContext={questions[questionIndex].isWithContext}
-                  lastSeen={lastSeen}
-                  twitterName={twitterData[questionIndex].name}
-                  comments={questions[questionIndex].numComments}
-                  retweets={questions[questionIndex].numRetweets}
-                  likes={questions[questionIndex].numLikes}
-                  bookmarked={questions[questionIndex].numBookmarked}
-                  views={questions[questionIndex].numViews}
-                />
+                <>
+                  {answers.length !== 20 && (
+                    <Tweet
+                      url={questions[questionIndex].url}
+                      context={questions[questionIndex].context}
+                      questionIndex={questionIndex}
+                      isWithContext={questions[questionIndex].isWithContext}
+                      lastSeen={lastSeen}
+                      twitterName={twitterData[questionIndex].name}
+                      comments={questions[questionIndex].numComments}
+                      retweets={questions[questionIndex].numRetweets}
+                      likes={questions[questionIndex].numLikes}
+                      bookmarked={questions[questionIndex].numBookmarked}
+                      views={questions[questionIndex].numViews}
+                    />
+                  )}
+                  {answers.length === 20 && (
+                    <div>
+                      {!answersResponse.length > 0 && (
+                        <div className="flex justify-center">
+                          <button
+                            onClick={handleSubmitAnswers}
+                            className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                          >
+                            Submit answers and get results
+                          </button>
+                        </div>
+                      )}
+                      <div className="flex flex-col h-screen">
+                        <div className="flex-grow overflow-y-auto">
+                          <div className="container">
+                            <p>Score: {score}/20</p>
+                            {answersResponse.map((item, i) => (
+                              <div key={i} className="pb-4">
+                                <img
+                                  src={item.imageUrl}
+                                  alt={`Image ${item.id}`}
+                                />
+                                <p>
+                                  The image is{" "}
+                                  {item.isDeepFake ? "fake" : "real"} - you
+                                  guessed{" "}
+                                  {item.isCorrect ? "correct" : "incorrect"}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               )
             )}
           </div>
           <div>
             <div>
-              <div>
-                <div className="pt-4 flex pb-2">
-                  <img
-                    src="src/assets/default-profile.png"
-                    alt=""
-                    className="h-12 w-12 rounded-full mr-4"
-                  />
-                  <div className="w-full h-28">
-                    <div>
-                      <p className="p-1 text-md md:text-lg">
-                        I believe the above image is{" "}
-                        <select
-                          id="deepfake"
-                          className="bg-black"
-                          value={realOrFake}
-                          onChange={(e) => setRealorFake(e.target.value)}
-                        >
-                          <option value="0" disabled>
-                            ...
-                          </option>
-                          <option value={1}>real</option>
-                          <option value={2}>fake</option>
-                        </select>
-                      </p>
-                      <p className="p-1 text-md md:text-lg">
-                        I am{" "}
-                        <select
-                          id="options"
-                          onChange={(e) =>
-                            setSelectedConfidence(e.target.value)
-                          }
-                          className="bg-black"
-                          value={selectedConfidence}
-                        >
-                          <option value="0" disabled>
-                            ...
-                          </option>
-                          <option value={1}>not very confident</option>
-                          <option value={2}>somewhat confident</option>
-                          <option value={3}>mostly confident</option>
-                          <option value={4}>100% confident</option>
-                        </select>{" "}
-                        in my answer
-                      </p>
-                      <div className="flex justify-end mt-1">
-                        <button
-                          className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
-                            disableButton ? "opacity-50" : ""
-                          }`}
-                          onClick={handleNextQuestion}
-                          disabled={disableButton}
-                        >
-                          Submit
-                        </button>
+              {answers.length !== 20 && (
+                <div>
+                  <div className="pt-4 flex pb-2">
+                    <img
+                      src="src/assets/default-profile.png"
+                      alt=""
+                      className="h-12 w-12 rounded-full mr-4"
+                    />
+                    <div className="w-full h-28">
+                      <div>
+                        <p className="p-1 text-md md:text-lg">
+                          I believe the above image is{" "}
+                          <select
+                            id="deepfake"
+                            className="bg-black"
+                            value={realOrFake}
+                            onChange={(e) =>
+                              setRealOrFake(Number(e.target.value))
+                            }
+                          >
+                            <option value="0" disabled>
+                              ...
+                            </option>
+                            <option value={1}>real</option>
+                            <option value={2}>fake</option>
+                          </select>
+                        </p>
+                        <p className="p-1 text-md md:text-lg">
+                          I am{" "}
+                          <select
+                            id="options"
+                            onChange={(e) =>
+                              setSelectedConfidence(Number(e.target.value))
+                            }
+                            className="bg-black"
+                            value={selectedConfidence}
+                          >
+                            <option value="0" disabled>
+                              ...
+                            </option>
+                            <option value={1}>not very confident</option>
+                            <option value={2}>somewhat confident</option>
+                            <option value={3}>mostly confident</option>
+                            <option value={4}>100% confident</option>
+                          </select>{" "}
+                          in my answer
+                        </p>
+                        <div className="flex justify-end mt-1">
+                          <button
+                            className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
+                              disableButton ? "opacity-50" : ""
+                            }`}
+                            onClick={handleNextQuestion}
+                            disabled={disableButton}
+                          >
+                            Submit
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
               <div className="w-full border-t border-grayedout mt-5 border-opacity-50 absolute left-0"></div>
             </div>
           </div>

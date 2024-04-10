@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import "./styles.css";
 import SlotCounter from "react-slot-counter";
 
@@ -9,8 +7,22 @@ import {
   HeartIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
+import PropTypes from "prop-types";
 
 export default function Tweet(props) {
+  Tweet.propTypes = {
+    url: PropTypes.string.isRequired,
+    context: PropTypes.string,
+    questionIndex: PropTypes.number.isRequired,
+    isWithContext: PropTypes.bool.isRequired,
+    comments: PropTypes.string.isRequired,
+    retweets: PropTypes.string.isRequired,
+    likes: PropTypes.string.isRequired,
+    bookmarked: PropTypes.string.isRequired,
+    views: PropTypes.string.isRequired,
+    twitterName: PropTypes.string.isRequired,
+  };
+
   return (
     <div>
       <div className="flex-row gap-4 max-w-xl">

@@ -33,7 +33,7 @@ function ParticipantForm() {
       ageRange: parseInt(participantValues.ageRange),
       industry: participantValues.industry,
       selfKnowledgeAssessment: parseInt(
-        participantValues.selfKnowledgeAssessment
+        participantValues.selfKnowledgeAssessment,
       ),
     };
 
@@ -145,7 +145,7 @@ function ParticipantForm() {
           <option value={3}>Fair</option>
           <option value={4}>Poor</option>
           <option value={5}>
-            I've never seen an AI generated image before
+            I&apos;ve never seen an AI generated image before
           </option>
         </select>
         {participantId === 0 && (
