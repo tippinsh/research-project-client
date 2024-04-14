@@ -47,7 +47,7 @@ export default function Answer() {
         try {
           const storedParticipantId = localStorage.getItem("participantId");
           const response = await fetch(
-            `https://${BASE_URL}:8080/api/images/${storedParticipantId}`
+            `https://${BASE_URL}/api/images/${storedParticipantId}`
           );
 
           const data = await response.json();
@@ -81,9 +81,7 @@ export default function Answer() {
         if (storedTwitterData) {
           setTwitterData(JSON.parse(storedTwitterData));
         } else {
-          const response = await fetch(
-            `https://${BASE_URL}:8080/api/profile-data`
-          );
+          const response = await fetch(`https://${BASE_URL}/api/profile-data`);
 
           const data = await response.json();
           setTwitterData(data);
@@ -134,7 +132,7 @@ export default function Answer() {
     try {
       var json = JSON.stringify(answers);
       console.log(json);
-      const response = await fetch(`https://${BASE_URL}:8080/api/answers`, {
+      const response = await fetch(`https://${BASE_URL}/api/answers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
