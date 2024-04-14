@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import BASE_URL from "../../config";
 
 function ParticipantForm() {
   const [participantValues, setParticipantValues] = useState({
@@ -29,6 +28,7 @@ function ParticipantForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const baseUrl = process.env.VITE_REACT_APP_BASE_URL;
 
     const participantValuesInt = {
       ageRange: parseInt(participantValues.ageRange),
@@ -38,7 +38,7 @@ function ParticipantForm() {
       ),
     };
 
-    const response = await fetch(`https://${BASE_URL}/api/participant`, {
+    const response = await fetch(`https://${baseUrl}/api/participant`, {
       method: "POST",
       body: JSON.stringify(participantValuesInt),
       headers: {

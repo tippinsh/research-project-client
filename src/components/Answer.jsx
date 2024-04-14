@@ -29,6 +29,7 @@ export default function Answer() {
   // Get question data from local storage, if it is present then decrypt it and set the questions to the Question state
   // If it is not present then make an API call to retrieve it, then encrypt and store in local storage
   useEffect(() => {
+    const baseUrl = process.env.VITE_REACT_APP_BASE_URL;
     const storedEncryptedData = localStorage.getItem("questions");
     if (storedEncryptedData) {
       try {
@@ -47,7 +48,7 @@ export default function Answer() {
         try {
           const storedParticipantId = localStorage.getItem("participantId");
           const response = await fetch(
-            `https://${BASE_URL}/api/images/${storedParticipantId}`
+            `https://${baseUrl}/api/images/${storedParticipantId}`
           );
 
           const data = await response.json();
@@ -81,7 +82,7 @@ export default function Answer() {
         if (storedTwitterData) {
           setTwitterData(JSON.parse(storedTwitterData));
         } else {
-          const response = await fetch(`https://${BASE_URL}/api/profile-data`);
+          const response = await fetch(`https://${baseUrl}/api/profile-data`);
 
           const data = await response.json();
           setTwitterData(data);
@@ -132,7 +133,7 @@ export default function Answer() {
     try {
       var json = JSON.stringify(answers);
       console.log(json);
-      const response = await fetch(`https://${BASE_URL}/api/answers`, {
+      const response = await fetch(`https://${baseUrl}/api/answers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
