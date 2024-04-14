@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import BASE_URL from "../../config";
 
 function ParticipantForm() {
   const [participantValues, setParticipantValues] = useState({
@@ -33,11 +34,11 @@ function ParticipantForm() {
       ageRange: parseInt(participantValues.ageRange),
       industry: participantValues.industry,
       selfKnowledgeAssessment: parseInt(
-        participantValues.selfKnowledgeAssessment,
+        participantValues.selfKnowledgeAssessment
       ),
     };
 
-    const response = await fetch("http://localhost:8080/api/participant", {
+    const response = await fetch(`https://${BASE_URL}/api/participant`, {
       method: "POST",
       body: JSON.stringify(participantValuesInt),
       headers: {

@@ -34,7 +34,7 @@ export default function Answer() {
       try {
         const decryptedQuestions = CryptoJS.AES.decrypt(
           storedEncryptedData,
-          secretKey,
+          secretKey
         ).toString(CryptoJS.enc.Utf8);
         const parsedQuestions = JSON.parse(decryptedQuestions);
         setQuestions(parsedQuestions);
@@ -47,7 +47,7 @@ export default function Answer() {
         try {
           const storedParticipantId = localStorage.getItem("participantId");
           const response = await fetch(
-            `http://localhost:8080/api/images/${storedParticipantId}`,
+            `https://${BASE_URL}:8080/api/images/${storedParticipantId}`
           );
 
           const data = await response.json();
@@ -61,7 +61,7 @@ export default function Answer() {
       };
 
       fetchImages().catch((error) =>
-        console.error("Error fetching images:", error),
+        console.error("Error fetching images:", error)
       );
     }
   }, []);
@@ -82,7 +82,7 @@ export default function Answer() {
           setTwitterData(JSON.parse(storedTwitterData));
         } else {
           const response = await fetch(
-            "http://localhost:8080/api/profile-data",
+            `https://${BASE_URL}:8080/api/profile-data`
           );
 
           const data = await response.json();
@@ -94,7 +94,7 @@ export default function Answer() {
       }
     }
     fetchTwitterData().catch((error) =>
-      console.error("Error fetching twitter data:", error),
+      console.error("Error fetching twitter data:", error)
     );
   }, []);
 
@@ -134,7 +134,7 @@ export default function Answer() {
     try {
       var json = JSON.stringify(answers);
       console.log(json);
-      const response = await fetch("http://localhost:8080/api/answers", {
+      const response = await fetch(`https://${BASE_URL}:8080/api/answers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +145,7 @@ export default function Answer() {
       if (response.ok) {
         const data = await response.json();
         setAnswersResponse(data);
-        calculateScore();
+        calculateScore(data);
       }
     } catch (error) {
       console.error("Error submitting answers", error);
@@ -157,9 +157,9 @@ export default function Answer() {
     setLastSeen(randomNum);
   };
 
-  const calculateScore = () => {
+  const calculateScore = (data) => {
     let numCorrect = 0;
-    answersResponse.forEach((a) => {
+    data.forEach((a) => {
       if (a.isCorrect) {
         numCorrect++;
       }
@@ -219,10 +219,10 @@ export default function Answer() {
                                   alt={`Image ${item.id}`}
                                 />
                                 <p>
-                                  The image is{" "}
-                                  {item.isDeepFake ? "fake" : "real"} - you
-                                  guessed{" "}
-                                  {item.isCorrect ? "correct" : "incorrect"}
+                                  You are{" "}
+                                  {item.isCorrect ? "correct" : "incorrect"},
+                                  the image is{" "}
+                                  {item.isDeepFake ? "fake" : "real"}
                                 </p>
                               </div>
                             ))}
