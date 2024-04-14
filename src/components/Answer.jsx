@@ -29,7 +29,7 @@ export default function Answer() {
   // Get question data from local storage, if it is present then decrypt it and set the questions to the Question state
   // If it is not present then make an API call to retrieve it, then encrypt and store in local storage
   useEffect(() => {
-    const baseUrl = process.env.VITE_REACT_APP_BASE_URL;
+    const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
     const storedEncryptedData = localStorage.getItem("questions");
     if (storedEncryptedData) {
       try {
@@ -130,6 +130,7 @@ export default function Answer() {
   };
 
   const handleSubmitAnswers = async () => {
+    const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
     try {
       var json = JSON.stringify(answers);
       console.log(json);

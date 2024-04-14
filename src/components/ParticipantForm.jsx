@@ -28,7 +28,7 @@ function ParticipantForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const baseUrl = process.env.VITE_REACT_APP_BASE_URL;
+    const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     const participantValuesInt = {
       ageRange: parseInt(participantValues.ageRange),
