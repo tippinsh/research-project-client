@@ -1,5 +1,7 @@
 import "./styles.css";
 import SlotCounter from "react-slot-counter";
+import dummyProfile from "../assets/dummy-profile.jpeg";
+import twitterVerified from "../assets/twitter-verified.png";
 
 import {
   ChatBubbleOvalLeftIcon,
@@ -28,7 +30,7 @@ export default function Tweet(props) {
       <div className="flex-row gap-4 max-w-xl">
         <div className="flex items-center">
           <img
-            src="src/assets/dummy-profile.jpeg"
+            src={dummyProfile}
             alt=""
             className="h-12 w-12 rounded-full mr-4"
           />
@@ -37,11 +39,7 @@ export default function Tweet(props) {
               <p className="font-bold pr-1 text-offwhite text-sm md:text-lg">
                 {props.twitterName}
               </p>
-              <img
-                src="src/assets/twitter-verified.png"
-                alt=""
-                className="w-6 h-6 mr-2"
-              />
+              <img src={twitterTick} alt="" className="w-6 h-6 mr-2" />
             </div>
             <div>
               <p className="pr-3 text-grayedout text-sm md:text-lg">
