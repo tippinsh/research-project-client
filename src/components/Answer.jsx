@@ -55,7 +55,6 @@ export default function Answer() {
           const data = await response.json();
           const json = JSON.stringify(data);
           setQuestions(JSON.parse(json));
-          console.log(questions);
 
           encryptQuestionData(json, data);
           setIsLoading(false);
