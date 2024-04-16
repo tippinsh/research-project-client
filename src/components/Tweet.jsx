@@ -39,7 +39,7 @@ export default function Tweet(props) {
               <p className="font-bold pr-1 text-offwhite text-sm md:text-lg">
                 {props.twitterName}
               </p>
-              <img src={twitterTick} alt="" className="w-6 h-6 mr-2" />
+              <img src={twitterVerified} alt="" className="w-6 h-6 mr-2" />
             </div>
             <div>
               <p className="pr-3 text-grayedout text-sm md:text-lg">
