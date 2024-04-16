@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Tweet from "./Tweet";
 import CryptoJS from "crypto-js";
 import Spinner from "./Spinner";
+import defaultProfile from "../assets/default-profile.png";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -240,7 +241,7 @@ export default function Answer() {
                 <div>
                   <div className="pt-4 flex pb-2">
                     <img
-                      src="src/assets/default-profile.png"
+                      src={defaultProfile}
                       alt=""
                       className="h-12 w-12 rounded-full mr-4"
                     />

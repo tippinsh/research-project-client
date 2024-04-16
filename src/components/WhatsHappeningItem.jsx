@@ -1,4 +1,5 @@
 import { IoIosMore } from "react-icons/io";
+import city from "../assets/city.png";
 
 function WhatsHappeningItem() {
   return (
@@ -6,11 +7,7 @@ function WhatsHappeningItem() {
       <div className="text-lg font-bold pl-1">What's Happening</div>
       <div className="flex gap-2 pl-1 hover:bg-[#1F2125] cursor-pointer w-full p-2 rounded-xl">
         <div>
-          <img
-            src="src/assets/city.png"
-            alt="Man City players hugging"
-            className="w-24"
-          />
+          <img src={city} alt="Man City players hugging" className="w-24" />
         </div>
         <div>
           <p className="font-bold">Manchester City</p>
