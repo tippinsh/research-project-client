@@ -54,6 +54,8 @@ export default function Answer() {
 
           const data = await response.json();
           const json = JSON.stringify(data);
+          setQuestions(JSON.parse(json));
+          console.log(questions);
 
           encryptQuestionData(json, data);
           setIsLoading(false);
@@ -68,6 +70,25 @@ export default function Answer() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+  //     try {
+  //       const storedParticipantId = localStorage.getItem("participantId");
+  //       const response = await fetch(
+  //         `https://${baseUrl}/api/images/${storedParticipantId}`
+  //       );
+
+  //       const data = await response.json();
+  //       setQuestions(data);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching questions:", error);
+  //     }
+  //   };
+
+  //   fetchImages();
+  // }, []);
+
   // If data does not exist in local storage, then encrypt it and store in local storage
   function encryptQuestionData(json, data) {
     const encryptedData = CryptoJS.AES.encrypt(json, secretKey).toString();
@@ -75,28 +96,28 @@ export default function Answer() {
     setQuestions(data);
   }
 
-  useEffect(() => {
-    async function fetchTwitterData() {
-      try {
-        const storedTwitterData = localStorage.getItem("twitterData");
+  // useEffect(() => {
+  //   async function fetchTwitterData() {
+  //     try {
+  //       const storedTwitterData = localStorage.getItem("twitterData");
 
-        if (storedTwitterData) {
-          setTwitterData(JSON.parse(storedTwitterData));
-        } else {
-          const response = await fetch(`https://${baseUrl}/api/profile-data`);
+  //       if (storedTwitterData) {
+  //         setTwitterData(JSON.parse(storedTwitterData));
+  //       } else {
+  //         const response = await fetch(`https://${baseUrl}/api/profile-data`);
 
-          const data = await response.json();
-          setTwitterData(data);
-          localStorage.setItem("twitterData", JSON.stringify(data));
-        }
-      } catch (error) {
-        console.error("Error fetching twitter data:", error);
-      }
-    }
-    fetchTwitterData().catch((error) =>
-      console.error("Error fetching twitter data:", error)
-    );
-  }, []);
+  //         const data = await response.json();
+  //         setTwitterData(data);
+  //         localStorage.setItem("twitterData", JSON.stringify(data));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching twitter data:", error);
+  //     }
+  //   }
+  //   fetchTwitterData().catch((error) =>
+  //     console.error("Error fetching twitter data:", error)
+  //   );
+  // }, []);
 
   useEffect(() => {
     const isDisabled = realOrFake === 0 || selectedConfidence === 0;
@@ -178,8 +199,7 @@ export default function Answer() {
               </div>
             ) : (
               questions &&
-              questions.length > 1 &&
-              twitterData.length > 0 && (
+              questions.length > 1 && (
                 <>
                   {answers.length !== 20 && (
                     <Tweet
@@ -188,7 +208,7 @@ export default function Answer() {
                       questionIndex={questionIndex}
                       isWithContext={questions[questionIndex].isWithContext}
                       lastSeen={lastSeen}
-                      twitterName={twitterData[questionIndex].name}
+                      twitterName={"test"}
                       comments={questions[questionIndex].numComments}
                       retweets={questions[questionIndex].numRetweets}
                       likes={questions[questionIndex].numLikes}
