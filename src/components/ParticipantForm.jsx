@@ -34,7 +34,7 @@ function ParticipantForm() {
       ageRange: parseInt(participantValues.ageRange),
       industry: participantValues.industry,
       selfKnowledgeAssessment: parseInt(
-        participantValues.selfKnowledgeAssessment
+        participantValues.selfKnowledgeAssessment,
       ),
     };
 
@@ -45,6 +45,8 @@ function ParticipantForm() {
         "Content-Type": "application/json",
       },
     });
+
+    setDisableButton(true);
 
     const resData = await response.json();
     if (!response.ok) {
@@ -61,7 +63,7 @@ function ParticipantForm() {
       <form className="max-w-sm mx-auto" method="post" onSubmit={handleSubmit}>
         <label
           htmlFor="ageRange"
-          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-offwhite"
         >
           Select your age range
         </label>
@@ -84,7 +86,7 @@ function ParticipantForm() {
         </select>
         <label
           htmlFor="industry"
-          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-offwhite"
         >
           What industry do you work in?
         </label>
@@ -126,9 +128,9 @@ function ParticipantForm() {
         </select>
         <label
           htmlFor="selfKnowledgeAssessment"
-          className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-md font-medium text-offwhite"
         >
-          What would you rate your ability to identify synthetic images?
+          What would you rate your ability to identify AI-generated images?
         </label>
         <select
           id="selfKnowledgeAssessment"
@@ -153,7 +155,7 @@ function ParticipantForm() {
           <button
             type="submit"
             disabled={disableButton}
-            className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+            className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
           >
             Submit
           </button>
@@ -166,7 +168,7 @@ function ParticipantForm() {
           >
             <button
               type="button"
-              className="mt-4 text-gray-900 hover:text-white border border-gray-800 w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
             >
               Next
             </button>
