@@ -9,7 +9,7 @@ function HomePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowButton(true);
-    }, 34000);
+    }, 17000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -22,9 +22,6 @@ function HomePage() {
             style={{ whiteSpace: "pre-line" }}
             sequence={[
               `Hello, and thank you for your interest in this research.
-              This study is being conducted as part of a dissertation project.
-              It forms part of the requirements to be awarded a MSc in Computer Science at Northumbria University.
-            Participation in the study is voluntary and can be withdrawn at any time.
             Before deciding whether to take part, it is important for you to understand what the study involves.
     
             Please take the time to read the information on the next page carefully.`,

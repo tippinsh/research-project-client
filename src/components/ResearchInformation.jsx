@@ -17,6 +17,26 @@ function ResearchInformation() {
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left text-lg font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75">
+                <span>Overview</span>
+                <ChevronUpIcon
+                  className={`${
+                    open ? "rotate-180 transform" : ""
+                  } h-5 w-5 text-gray-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="px-4 pb-2 pt-4 text-lg text-offwhite">
+                This study is being conducted as part of a dissertation project.
+                It forms part of the requirements to be awarded a MSc in
+                Computer Science at Northumbria University. Participation in the
+                study is voluntary and can be withdrawn at any time.
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as="div" className="mt-2">
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left text-lg font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500/75">
                 <span>Purpose of the study</span>
                 <ChevronUpIcon
                   className={`${
