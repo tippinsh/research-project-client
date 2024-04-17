@@ -17,6 +17,7 @@ export default function Answer() {
   const [isLoading, setIsLoading] = useState(true);
   const [participantId, setParticipantId] = useState(0);
   const [score, setScore] = useState(0);
+  const [showScore, setShowScore] = useState(false);
   const secretKey = "secret_key";
   const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -166,6 +167,7 @@ export default function Answer() {
         const data = await response.json();
         setAnswersResponse(data);
         calculateScore(data);
+        setShowScore(true);
       }
     } catch (error) {
       console.error("Error submitting answers", error);
@@ -230,7 +232,7 @@ export default function Answer() {
                       <div className="flex flex-col h-screen">
                         <div className="flex-grow overflow-y-auto">
                           <div className="container">
-                            <p>Score: {score}/20</p>
+                            {showScore && <p>Score: {score}/20</p>}
                             {answersResponse.map((item, i) => (
                               <div key={i} className="pb-4">
                                 <img
