@@ -37,7 +37,7 @@ export default function Answer() {
       try {
         const decryptedQuestions = CryptoJS.AES.decrypt(
           storedEncryptedData,
-          secretKey,
+          secretKey
         ).toString(CryptoJS.enc.Utf8);
         const parsedQuestions = JSON.parse(decryptedQuestions);
         setQuestions(parsedQuestions);
@@ -50,7 +50,7 @@ export default function Answer() {
         try {
           const storedParticipantId = localStorage.getItem("participantId");
           const response = await fetch(
-            `https://${baseUrl}/api/images/${storedParticipantId}`,
+            `https://${baseUrl}/api/images/${storedParticipantId}`
           );
 
           const data = await response.json();
@@ -65,7 +65,7 @@ export default function Answer() {
       };
 
       fetchImages().catch((error) =>
-        console.error("Error fetching images:", error),
+        console.error("Error fetching images:", error)
       );
     }
   }, [baseUrl]);
@@ -115,7 +115,7 @@ export default function Answer() {
       }
     }
     fetchTwitterData().catch((error) =>
-      console.error("Error fetching twitter data:", error),
+      console.error("Error fetching twitter data:", error)
     );
   }, [baseUrl]);
 
@@ -209,7 +209,7 @@ export default function Answer() {
                       questionIndex={questionIndex}
                       isWithContext={questions[questionIndex].isWithContext}
                       lastSeen={lastSeen}
-                      twitterName={twitterData[questionIndex].name}
+                      twitterName={"test"}
                       comments={questions[questionIndex].numComments}
                       retweets={questions[questionIndex].numRetweets}
                       likes={questions[questionIndex].numLikes}
