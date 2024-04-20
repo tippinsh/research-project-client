@@ -55,7 +55,7 @@ function ParticipantForm() {
 
     const newParticipantId = resData.id;
     setParticipantId(newParticipantId);
-    localStorage.setItem("participantId", newParticipantId);
+    sessionStorage.setItem("participantId", newParticipantId);
   }
 
   return (
@@ -163,7 +163,7 @@ function ParticipantForm() {
         {participantId > 0 && (
           <Link
             to={{
-              pathname: "/survey",
+              pathname: "/instructions",
             }}
           >
             <button

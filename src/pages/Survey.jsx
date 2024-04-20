@@ -1,9 +1,24 @@
 import Answer from "../components/Answer";
 import Sidebar from "../components/Sidebar";
 import RecommendationBar from "../components/RecommendationBar";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function SurveyPage() {
+  const navigateTo = useNavigate();
+
+  useEffect(() => {
+    const participantId = sessionStorage.getItem("participantId");
+    if (!participantId) {
+      navigateTo("/participant");
+    }
+  }, [navigateTo]);
+
+  window.onbeforeunload = (event) => {
+    event.preventDefault();
+    return "";
+  };
+
   return (
     <div className="bg-black min-h-screen">
       <div className="container h-full mx-auto xl:px-30 max-w-7xl">

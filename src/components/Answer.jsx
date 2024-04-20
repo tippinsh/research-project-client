@@ -23,7 +23,7 @@ export default function Answer() {
 
   // Get participant id and store in local storage
   useEffect(() => {
-    const storedParticipantId = localStorage.getItem("participantId");
+    const storedParticipantId = sessionStorage.getItem("participantId");
     if (storedParticipantId) {
       setParticipantId(parseInt(storedParticipantId));
     }
@@ -32,12 +32,12 @@ export default function Answer() {
   // Get question data from local storage, if it is present then decrypt it and set the questions to the Question state
   // If it is not present then make an API call to retrieve it, then encrypt and store in local storage
   useEffect(() => {
-    const storedEncryptedData = localStorage.getItem("questions");
+    const storedEncryptedData = sessionStorage.getItem("questions");
     if (storedEncryptedData) {
       try {
         const decryptedQuestions = CryptoJS.AES.decrypt(
           storedEncryptedData,
-          secretKey
+          secretKey,
         ).toString(CryptoJS.enc.Utf8);
         const parsedQuestions = JSON.parse(decryptedQuestions);
         setQuestions(parsedQuestions);
@@ -48,9 +48,9 @@ export default function Answer() {
     } else {
       const fetchImages = async () => {
         try {
-          const storedParticipantId = localStorage.getItem("participantId");
+          const storedParticipantId = sessionStorage.getItem("participantId");
           const response = await fetch(
-            `https://${baseUrl}/api/images/${storedParticipantId}`
+            `https://${baseUrl}/api/images/${storedParticipantId}`,
           );
 
           const data = await response.json();
@@ -65,19 +65,25 @@ export default function Answer() {
       };
 
       fetchImages().catch((error) =>
-        console.error("Error fetching images:", error)
+        console.error("Error fetching images:", error),
       );
     }
   }, [baseUrl]);
+
+  // useEffect(() => {
+  //   if (props.refreshed) {
+  //     setAnswers([]);
+  //   }
+  // }, [props.refreshed]);
 
   // useEffect(() => {
   //   const fetchImages = async () => {
   //     try {
   //       const storedParticipantId = localStorage.getItem("participantId");
   //       const response = await fetch(
-  //         `https://${baseUrl}/api/images/${storedParticipantId}`
+  //         `https://${baseUrl}/api/images/${storedParticipantId}`,
   //       );
-
+  //
   //       const data = await response.json();
   //       setQuestions(data);
   //       setIsLoading(false);
@@ -85,21 +91,21 @@ export default function Answer() {
   //       console.error("Error fetching questions:", error);
   //     }
   //   };
-
+  //
   //   fetchImages();
   // }, []);
 
   // If data does not exist in local storage, then encrypt it and store in local storage
   function encryptQuestionData(json, data) {
     const encryptedData = CryptoJS.AES.encrypt(json, secretKey).toString();
-    localStorage.setItem("questions", encryptedData);
+    sessionStorage.setItem("questions", encryptedData);
     setQuestions(data);
   }
 
   useEffect(() => {
     async function fetchTwitterData() {
       try {
-        const storedTwitterData = localStorage.getItem("twitterData");
+        const storedTwitterData = sessionStorage.getItem("twitterData");
 
         if (storedTwitterData) {
           setTwitterData(JSON.parse(storedTwitterData));
@@ -108,14 +114,15 @@ export default function Answer() {
 
           const data = await response.json();
           setTwitterData(data);
-          localStorage.setItem("twitterData", JSON.stringify(data));
+          console.log(twitterData);
+          sessionStorage.setItem("twitterData", JSON.stringify(data));
         }
       } catch (error) {
         console.error("Error fetching twitter data:", error);
       }
     }
     fetchTwitterData().catch((error) =>
-      console.error("Error fetching twitter data:", error)
+      console.error("Error fetching twitter data:", error),
     );
   }, [baseUrl]);
 
@@ -150,6 +157,10 @@ export default function Answer() {
     generateRandomNumber();
     console.log(answers);
   };
+
+  // useEffect(() => {
+  //   console.log("Answers:", answers);
+  // }, [answers]);
 
   const handleSubmitAnswers = async () => {
     try {
@@ -200,7 +211,8 @@ export default function Answer() {
               </div>
             ) : (
               questions &&
-              questions.length > 1 && (
+              questions.length > 0 &&
+              twitterData.length > 0 && (
                 <>
                   {answers.length !== 20 && (
                     <Tweet
@@ -209,7 +221,7 @@ export default function Answer() {
                       questionIndex={questionIndex}
                       isWithContext={questions[questionIndex].isWithContext}
                       lastSeen={lastSeen}
-                      twitterName={"test"}
+                      twitterName={twitterData[questionIndex].name}
                       comments={questions[questionIndex].numComments}
                       retweets={questions[questionIndex].numRetweets}
                       likes={questions[questionIndex].numLikes}
