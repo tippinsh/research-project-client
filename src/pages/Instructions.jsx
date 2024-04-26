@@ -13,11 +13,13 @@ export default function Instructions() {
       </div>
       <div className="flex items-center justify-center">
         <div>
-          <img
-            src={InstructImage}
-            alt="Screenshot of a annotated tweet showing instructions on how to complete the survey"
-          />
-          <div className="mt-4">
+          <div className="p-7">
+            <img
+              src={InstructImage}
+              alt="Screenshot of a annotated tweet showing instructions on how to complete the survey"
+            />
+          </div>
+          <div className="mt-4 mb-4">
             <Link to="/survey">
               <button
                 type="button"
