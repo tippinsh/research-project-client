@@ -336,7 +336,7 @@ export default function Answer() {
                   </div>
                 </div>
               )}
-              <div className="w-full border-t border-grayedout mt-7 border-opacity-50 absolute left-0"></div>
+              <div className="w-full border-t border-grayedout mt-6 border-opacity-50 absolute left-0"></div>
             </div>
           </div>
         </div>
