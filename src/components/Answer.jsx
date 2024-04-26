@@ -164,7 +164,7 @@ export default function Answer() {
 
   const handleSubmitAnswers = async () => {
     try {
-      var json = JSON.stringify(answers);
+      let json = JSON.stringify(answers);
       console.log(json);
       const response = await fetch(`https://${baseUrl}/api/answers`, {
         method: "POST",
