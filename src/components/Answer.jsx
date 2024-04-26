@@ -3,6 +3,7 @@ import Tweet from "./Tweet";
 import CryptoJS from "crypto-js";
 import Spinner from "./Spinner";
 import defaultProfile from "../assets/default-profile.png";
+import Button from "./Button.jsx";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -244,11 +245,14 @@ export default function Answer() {
                       <div className="flex flex-col h-screen">
                         <div className="flex-grow overflow-y-auto">
                           <div className="container">
-                            {showScore && <p>Score: {score}/20</p>}
+                            {showScore && (
+                              <p className="pb-2">Score: {score}/20</p>
+                            )}
                             {answersResponse.map((item, i) => (
                               <div key={i} className="pb-4">
                                 <img
                                   src={item.imageUrl}
+                                  className="rounded-xl pb-1"
                                   alt={`Image ${item.id}`}
                                 />
                                 <p>

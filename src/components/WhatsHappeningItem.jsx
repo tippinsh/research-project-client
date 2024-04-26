@@ -1,17 +1,23 @@
 import { IoIosMore } from "react-icons/io";
-import city from "../assets/city.png";
+import james from "../assets/james.jpg";
 
 function WhatsHappeningItem() {
   return (
-    <div className="flex flex-col bg-twitteritem rounded-xl p-2 gap-5">
-      <div className="text-lg font-bold pl-1">What's Happening</div>
+    <div className="flex flex-col bg-twitteritem rounded-xl p-2 gap-4">
+      <div className="text-lg font-bold pl-1 pt-1">What's Happening</div>
       <div className="flex gap-2 pl-1 hover:bg-[#1F2125] cursor-pointer w-full p-2 rounded-xl">
         <div>
-          <img src={city} alt="Man City players hugging" className="w-24" />
+          <img
+            src={james}
+            alt="Man City players hugging"
+            className="w-32 h-16"
+          />
         </div>
         <div>
-          <p className="font-bold">Manchester City</p>
-          <p className="text-grayedout text-sm">Premier League · Last night </p>
+          <p className="font-bold">England</p>
+          <p className="text-grayedout text-sm">
+            Women's football · Last night{" "}
+          </p>
         </div>
       </div>
       <div className="hover:bg-[#1F2125] cursor-pointer w-full p-2 rounded-xl">
