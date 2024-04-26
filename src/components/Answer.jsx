@@ -228,6 +228,7 @@ export default function Answer() {
                       likes={questions[questionIndex].numLikes}
                       bookmarked={questions[questionIndex].numBookmarked}
                       views={questions[questionIndex].numViews}
+                      gender={twitterData[questionIndex].gender}
                     />
                   )}
                   {answers.length === 20 && (

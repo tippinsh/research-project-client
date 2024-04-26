@@ -16,7 +16,7 @@ function WhatsHappeningItem() {
         <div>
           <p className="font-bold">England</p>
           <p className="text-grayedout text-sm">
-            Women's football · Last night{" "}
+            Women&apos;s football · Last night{" "}
           </p>
         </div>
       </div>

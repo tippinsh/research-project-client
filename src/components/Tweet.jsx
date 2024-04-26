@@ -1,7 +1,9 @@
 import "./styles.css";
 import SlotCounter from "react-slot-counter";
-import dummyProfile from "../assets/dummy-profile.jpeg";
-import twitterVerified from "../assets/twitter-verified.png";
+import FemaleProfile from "../assets/dummy-profile.jpeg";
+import TwitterVerified from "../assets/twitter-verified.png";
+import MaleProfile from "../assets/male.jpeg";
+import DefaultProfile from "../assets/female.jpeg";
 
 import {
   ChatBubbleOvalLeftIcon,
@@ -23,14 +25,27 @@ export default function Tweet(props) {
     bookmarked: PropTypes.string.isRequired,
     views: PropTypes.string.isRequired,
     twitterName: PropTypes.string.isRequired,
+    gender: PropTypes.string.isRequired,
   };
+
+  let image;
+  function ImagePath() {
+    if (props.gender === "male") {
+      image = MaleProfile;
+    } else if (props.gender === "female") {
+      image = FemaleProfile;
+    } else {
+      image = DefaultProfile;
+    }
+    return image;
+  }
 
   return (
     <div>
       <div className="flex-row gap-4 max-w-xl">
         <div className="flex items-center">
           <img
-            src={dummyProfile}
+            src={ImagePath()}
             alt=""
             className="h-12 w-12 rounded-full mr-4"
           />
@@ -39,7 +54,7 @@ export default function Tweet(props) {
               <p className="font-bold pr-1 text-offwhite text-sm md:text-lg">
                 {props.twitterName}
               </p>
-              <img src={twitterVerified} alt="" className="w-6 h-6 mr-2" />
+              <img src={TwitterVerified} alt="" className="w-6 h-6 mr-2" />
             </div>
             <div>
               <p className="pr-3 text-grayedout text-sm md:text-lg">
