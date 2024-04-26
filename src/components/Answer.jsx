@@ -317,7 +317,10 @@ export default function Answer() {
                           </select>{" "}
                           in my answer
                         </p>
-                        <div className="flex justify-end mt-1">
+                        <div className="flex justify-between mt-1 items-center">
+                          <p className="text-sm italic">
+                            Question: {answers.length + 1}/20
+                          </p>
                           <button
                             className={`bg-twitterblue px-3 py-2 md:px-5 md:py-3 text-sm md:text-md rounded-full text-white font-bold ${
                               disableButton ? "opacity-50" : ""
@@ -333,7 +336,7 @@ export default function Answer() {
                   </div>
                 </div>
               )}
-              <div className="w-full border-t border-grayedout mt-5 border-opacity-50 absolute left-0"></div>
+              <div className="w-full border-t border-grayedout mt-6 border-opacity-50 absolute left-0"></div>
             </div>
           </div>
         </div>
