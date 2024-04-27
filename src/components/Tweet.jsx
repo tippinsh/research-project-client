@@ -1,4 +1,5 @@
 import "./styles.css";
+import { useState, useEffect } from "react";
 import SlotCounter from "react-slot-counter";
 import FemaleProfile from "../assets/dummy-profile.jpeg";
 import TwitterVerified from "../assets/twitter-verified.png";
@@ -28,6 +29,14 @@ export default function Tweet(props) {
     gender: PropTypes.string.isRequired,
   };
 
+  const [randomDateTime, setRandomDateTime] = useState("");
+
+  useEffect(() => {
+    // Trigger random date generator when questionIndex changes
+    const newRandomDateTime = getRandomDate();
+    setRandomDateTime(newRandomDateTime);
+  }, [props.questionIndex]);
+
   let image;
   function ImagePath() {
     if (props.gender === "male") {
@@ -38,6 +47,28 @@ export default function Tweet(props) {
       image = DefaultProfile;
     }
     return image;
+  }
+
+  function getRandomDate() {
+    const hours = Math.floor(Math.random() * 12) + 1;
+    const minutes = Math.floor(Math.random() * 60);
+    const month = Math.floor(Math.random() * 12) + 1;
+    const day = Math.floor(Math.random() * 31) + 1;
+
+    const randomDate = new Date(2024, month - 1, day, hours, minutes);
+
+    const formattedTime = randomDate.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    const formattedDate = randomDate.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    return `${formattedTime} · ${formattedDate}`;
   }
 
   return (
@@ -86,7 +117,7 @@ export default function Tweet(props) {
         </div>
       </div>
       <p className="mt-3 text-grayedout text-sm md:text-lg">
-        3.17 PM · Mar 24, 2024 ·{" "}
+        {randomDateTime} ·{" "}
         <span className="text-white">
           <SlotCounter value={props.views} />
         </span>{" "}
