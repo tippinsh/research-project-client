@@ -3,6 +3,7 @@ import Tweet from "./Tweet";
 import CryptoJS from "crypto-js";
 import Spinner from "./Spinner";
 import defaultProfile from "../assets/default-profile.png";
+import Error from "./Error.jsx";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -18,6 +19,7 @@ export default function Answer() {
   const [participantId, setParticipantId] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
+  const [error, setError] = useState();
   const secretKey = "secret_key";
   const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -29,8 +31,8 @@ export default function Answer() {
     }
   }, []);
 
-  // Get question data from local storage, if it is present then decrypt it and set the questions to the Question state
-  // If it is not present then make an API call to retrieve it, then encrypt and store in local storage
+  // Get question data from session storage, if it is present then decrypt it and set the questions to the Question state
+  // If it is not present then make an API call to retrieve it, then encrypt and store in session storage
   useEffect(() => {
     const storedEncryptedData = sessionStorage.getItem("questions");
     if (storedEncryptedData) {
@@ -43,7 +45,9 @@ export default function Answer() {
         setQuestions(parsedQuestions);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error getting questions", error);
+        setError({
+          message: "Could not fetch questions. Please try again later.",
+        });
       }
     } else {
       const fetchImages = async () => {
@@ -60,47 +64,15 @@ export default function Answer() {
           encryptQuestionData(json, data);
           setIsLoading(false);
         } catch (error) {
-          console.error("Error fetching questions:", error);
+          setError({
+            message: "Could not fetch questions. Please try again later.",
+          });
         }
       };
 
-      fetchImages().catch((error) =>
-        console.error("Error fetching images:", error),
-      );
+      fetchImages().catch((error) => setError(error));
     }
   }, [baseUrl]);
-
-  // useEffect(() => {
-  //   if (props.refreshed) {
-  //     setAnswers([]);
-  //   }
-  // }, [props.refreshed]);
-
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     try {
-  //       const storedParticipantId = localStorage.getItem("participantId");
-  //       const response = await fetch(
-  //         `https://${baseUrl}/api/images/${storedParticipantId}`,
-  //       );
-  //
-  //       const data = await response.json();
-  //       setQuestions(data);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching questions:", error);
-  //     }
-  //   };
-  //
-  //   fetchImages();
-  // }, []);
-
-  // If data does not exist in local storage, then encrypt it and store in local storage
-  function encryptQuestionData(json, data) {
-    const encryptedData = CryptoJS.AES.encrypt(json, secretKey).toString();
-    sessionStorage.setItem("questions", encryptedData);
-    setQuestions(data);
-  }
 
   useEffect(() => {
     async function fetchTwitterData() {
@@ -117,18 +89,13 @@ export default function Answer() {
           sessionStorage.setItem("twitterData", JSON.stringify(data));
         }
       } catch (error) {
-        console.error("Error fetching twitter data:", error);
+        setError({
+          message: "Could not fetch required data. Please try again later.",
+        });
       }
     }
-    fetchTwitterData().catch((error) =>
-      console.error("Error fetching twitter data:", error),
-    );
+    fetchTwitterData().catch((error) => setError(error));
   }, [baseUrl]);
-
-  useEffect(() => {
-    const isDisabled = realOrFake === 0 || selectedConfidence === 0;
-    setDisableButton(isDisabled);
-  }, [realOrFake, selectedConfidence]);
 
   const handleNextQuestion = () => {
     if (!(realOrFake && selectedConfidence)) {
@@ -145,20 +112,16 @@ export default function Answer() {
     };
 
     setAnswers((prevAnswers) => [...prevAnswers, answer]);
-
     const nextIndex = questionIndex + 1;
     setQuestionIndex(nextIndex);
 
+    // Reset values
     setRealOrFake(0);
     setSelectedConfidence(0);
     document.getElementById("options").value = "";
     document.getElementById("deepfake").value = "";
     generateRandomNumber();
   };
-
-  // useEffect(() => {
-  //   console.log("Answers:", answers);
-  // }, [answers]);
 
   const handleSubmitAnswers = async () => {
     try {
@@ -178,7 +141,10 @@ export default function Answer() {
         setShowScore(true);
       }
     } catch (error) {
-      console.error("Error submitting answers", error);
+      setError({
+        message:
+          error.message || "Could not submit answers. Please try again later.",
+      });
     }
   };
 
@@ -196,6 +162,26 @@ export default function Answer() {
       setScore(numCorrect);
     });
   };
+
+  // If data does not exist in session storage, then encrypt it and store in local storage
+  function encryptQuestionData(json, data) {
+    const encryptedData = CryptoJS.AES.encrypt(json, secretKey).toString();
+    sessionStorage.setItem("questions", encryptedData);
+    setQuestions(data);
+  }
+
+  useEffect(() => {
+    const isDisabled = realOrFake === 0 || selectedConfidence === 0;
+    setDisableButton(isDisabled);
+  }, [realOrFake, selectedConfidence]);
+
+  // useEffect(() => {
+  //   console.log("Answers:", answers);
+  // }, [answers]);
+
+  if (error) {
+    return <Error title="An error occurred." message={error.message} />;
+  }
 
   return (
     <div className="border-x border-grayedout border-opacity-50 top-0 bottom-0 min-h-screen">
