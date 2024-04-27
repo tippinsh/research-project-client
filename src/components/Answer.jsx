@@ -3,7 +3,6 @@ import Tweet from "./Tweet";
 import CryptoJS from "crypto-js";
 import Spinner from "./Spinner";
 import defaultProfile from "../assets/default-profile.png";
-import Button from "./Button.jsx";
 
 export default function Answer() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -115,7 +114,6 @@ export default function Answer() {
 
           const data = await response.json();
           setTwitterData(data);
-          console.log(twitterData);
           sessionStorage.setItem("twitterData", JSON.stringify(data));
         }
       } catch (error) {
@@ -156,7 +154,6 @@ export default function Answer() {
     document.getElementById("options").value = "";
     document.getElementById("deepfake").value = "";
     generateRandomNumber();
-    console.log(answers);
   };
 
   // useEffect(() => {
@@ -166,7 +163,6 @@ export default function Answer() {
   const handleSubmitAnswers = async () => {
     try {
       let json = JSON.stringify(answers);
-      console.log(json);
       const response = await fetch(`https://${baseUrl}/api/answers`, {
         method: "POST",
         headers: {
