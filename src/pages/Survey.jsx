@@ -26,7 +26,7 @@ export default function SurveyPage() {
           <div className="hidden md:block">
             <Sidebar />
           </div>
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 pb-10 md:pb-0">
             <Answer />
           </div>
           <div className="hidden md:block">
