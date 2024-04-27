@@ -32,7 +32,6 @@ export default function Tweet(props) {
   const [randomDateTime, setRandomDateTime] = useState("");
 
   useEffect(() => {
-    // Trigger random date generator when questionIndex changes
     const newRandomDateTime = getRandomDate();
     setRandomDateTime(newRandomDateTime);
   }, [props.questionIndex]);
@@ -55,7 +54,7 @@ export default function Tweet(props) {
     const month = Math.floor(Math.random() * 12) + 1;
     const day = Math.floor(Math.random() * 31) + 1;
 
-    const randomDate = new Date(2024, month - 1, day, hours, minutes);
+    const randomDate = new Date(2023, month - 1, day, hours, minutes);
 
     const formattedTime = randomDate.toLocaleString("en-US", {
       hour: "numeric",
