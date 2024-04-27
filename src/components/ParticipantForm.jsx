@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import Error from "./Error.jsx";
 import { useState, useEffect } from "react";
+import Spinner from "./Spinner.jsx";
 
 function ParticipantForm() {
   const [participantValues, setParticipantValues] = useState({
@@ -9,6 +11,8 @@ function ParticipantForm() {
   });
   const [participantId, setParticipantId] = useState(0);
   const [disableButton, setDisableButton] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +32,7 @@ function ParticipantForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
     const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
     const participantValuesInt = {
@@ -38,24 +43,35 @@ function ParticipantForm() {
       ),
     };
 
-    const response = await fetch(`https://${baseUrl}/api/participant`, {
-      method: "POST",
-      body: JSON.stringify(participantValuesInt),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(`https://${baseUrl}/api/participant`, {
+        method: "POST",
+        body: JSON.stringify(participantValuesInt),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    setDisableButton(true);
+      setDisableButton(true);
 
-    const resData = await response.json();
-    if (!response.ok) {
-      throw new Error("Failed to update participant data");
+      const resData = await response.json();
+
+      const newParticipantId = resData.id;
+      setParticipantId(newParticipantId);
+      sessionStorage.setItem("participantId", newParticipantId);
+
+      if (response.ok) {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setError({
+        message: "Could not submit answers. Please try again later.",
+      });
     }
+  }
 
-    const newParticipantId = resData.id;
-    setParticipantId(newParticipantId);
-    sessionStorage.setItem("participantId", newParticipantId);
+  if (error) {
+    return <Error title="An error occurred." message={error.message} />;
   }
 
   return (
@@ -151,28 +167,36 @@ function ParticipantForm() {
             I&apos;ve never seen an AI generated image before
           </option>
         </select>
-        {participantId === 0 && (
-          <button
-            type="submit"
-            disabled={disableButton}
-            className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
-          >
-            Submit
-          </button>
-        )}
-        {participantId > 0 && (
-          <Link
-            to={{
-              pathname: "/instructions",
-            }}
-          >
-            <button
-              type="button"
-              className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
-            >
-              Next
-            </button>
-          </Link>
+        {isLoading ? (
+          <div className="flex justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            {participantId === 0 && (
+              <button
+                type="submit"
+                disabled={disableButton}
+                className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
+              >
+                Submit
+              </button>
+            )}
+            {participantId > 0 && (
+              <Link
+                to={{
+                  pathname: "/instructions",
+                }}
+              >
+                <button
+                  type="button"
+                  className="mt-4 hover:text-white border w-full hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 border-gray-600 text-white"
+                >
+                  Next
+                </button>
+              </Link>
+            )}
+          </>
         )}
       </form>
     </div>
