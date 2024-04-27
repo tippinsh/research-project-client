@@ -216,13 +216,15 @@ export default function Answer() {
                   {answers.length === 20 && (
                     <div>
                       {!answersResponse.length > 0 && (
-                        <div className="flex justify-center">
-                          <button
-                            onClick={handleSubmitAnswers}
-                            className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-                          >
-                            Submit answers and get results
-                          </button>
+                        <div className="flex justify-center items-center min-h-screen">
+                          <div className="flex justify-center">
+                            <button
+                              onClick={handleSubmitAnswers}
+                              className="bg-amber-400 text-black border focus:ring-4 focus:outline-none focus:ring-gray-300 md:text-lg font-medium rounded-lg text-sm md:px-10 md:py-7 px-5 py-2.5 text-center me-2 mb-2 border-gray-600 hover:bg-amber-300"
+                            >
+                              Submit answers and get results
+                            </button>
+                          </div>
                         </div>
                       )}
                       <div className="flex flex-col h-screen">
