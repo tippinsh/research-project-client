@@ -141,8 +141,7 @@ export default function Answer() {
       }
     } catch (error) {
       setError({
-        message:
-          error.message || "Could not submit answers. Please try again later.",
+        message: "Could not submit answers. Please try again later.",
       });
     }
   };
