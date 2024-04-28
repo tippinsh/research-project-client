@@ -8,7 +8,7 @@ export default function SurveyPage() {
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    const participantId = sessionStorage.getItem("participantId");
+    const participantId = localStorage.getItem("participantId");
     if (!participantId) {
       navigateTo("/participant");
     }

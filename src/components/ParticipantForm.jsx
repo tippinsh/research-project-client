@@ -58,7 +58,7 @@ function ParticipantForm() {
 
       const newParticipantId = resData.id;
       setParticipantId(newParticipantId);
-      sessionStorage.setItem("participantId", newParticipantId);
+      localStorage.setItem("participantId", newParticipantId);
 
       if (response.ok) {
         setIsLoading(false);

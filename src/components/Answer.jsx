@@ -23,9 +23,8 @@ export default function Answer() {
   const secretKey = "secret_key";
   const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
-  // Get participant id and store in local storage
   useEffect(() => {
-    const storedParticipantId = sessionStorage.getItem("participantId");
+    const storedParticipantId = localStorage.getItem("participantId");
     if (storedParticipantId) {
       setParticipantId(parseInt(storedParticipantId));
     }
@@ -52,7 +51,7 @@ export default function Answer() {
     } else {
       const fetchImages = async () => {
         try {
-          const storedParticipantId = sessionStorage.getItem("participantId");
+          const storedParticipantId = localStorage.getItem("participantId");
           const response = await fetch(
             `https://${baseUrl}/api/images/${storedParticipantId}`,
           );
