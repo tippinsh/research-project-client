@@ -182,7 +182,7 @@ export default function Answer() {
   }
 
   return (
-    <div className="border-x border-grayedout border-opacity-50 top-0 bottom-0 min-h-screen">
+    <div className="md:border-x border-grayedout border-opacity-50 top-0 bottom-0 min-h-screen">
       <div className="relative">
         <div className="p-6">
           <div className="transition-opacity duration-500">
@@ -214,11 +214,11 @@ export default function Answer() {
                   {answers.length === 20 && (
                     <div>
                       {!answersResponse.length > 0 && (
-                        <div className="flex justify-center items-center min-h-screen">
+                        <div className="flex justify-center items-center pt-56">
                           <div className="flex justify-center">
                             <button
                               onClick={handleSubmitAnswers}
-                              className="bg-amber-400 text-black border focus:ring-4 focus:outline-none focus:ring-gray-300 md:text-lg font-medium rounded-lg text-sm md:px-10 md:py-7 px-5 py-2.5 text-center me-2 mb-2 border-gray-600 hover:bg-amber-300"
+                              className="w-40 h-40 md:w-56 md:h-56 bg-amber-400 text-black border focus:ring-4 focus:outline-none focus:ring-gray-300 md:text-lg font-medium rounded-full text-sm md:px-10 md:py-7 px-5 py-2.5 text-center me-2 mb-2 border-gray-600 hover:bg-amber-300"
                             >
                               Submit answers and get results
                             </button>
@@ -315,7 +315,7 @@ export default function Answer() {
                             onClick={handleNextQuestion}
                             disabled={disableButton}
                           >
-                            Submit
+                            Save & Next
                           </button>
                         </div>
                       </div>
