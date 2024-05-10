@@ -4,7 +4,9 @@ import SurveyPage from "./pages/Survey";
 import ParticipantInformationPage from "./pages/ParticipantInformation";
 import ParticipantInputPage from "./pages/ParticipantInput";
 import InstructionsPage from "./pages/Instructions";
+import ConclusionPage from "./pages/Conclusion.jsx";
 
+// eslint-disable-next-line no-unused-vars
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
   { path: "/survey", element: <SurveyPage /> },
@@ -13,8 +15,13 @@ const router = createBrowserRouter([
   { path: "/instructions", element: <InstructionsPage /> },
 ]);
 
+const offlineRouter = createBrowserRouter([
+  { path: "/", element: <ConclusionPage /> },
+]);
+
 function App() {
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={offlineRouter} />;
+  // return <RouterProvider router={router} />;
 }
 
 export default App;
